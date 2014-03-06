@@ -1,0 +1,24 @@
+# baseURI: http://purl.org/metrics
+# imports: http://spinrdf.org/spin
+
+@prefix :        <http://purl.org/metrics#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+<http://purl.org/metrics>
+      rdf:type owl:Ontology ;
+      owl:imports <http://spinrdf.org/spin> ;
+      owl:versionInfo "Created with TopBraid Composer"^^xsd:string .
+
+:Metric
+      rdf:type owl:Class ;
+      rdfs:label "Metric"^^xsd:string ;
+      rdfs:subClassOf owl:Thing .
+
+:hasExpression
+      rdf:type rdf:Property ;
+      rdfs:domain :Metric ;
+      rdfs:label "has expression"^^xsd:string ;
+      rdfs:range rdfs:Resource .

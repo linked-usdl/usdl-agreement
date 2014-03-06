@@ -1,0 +1,127 @@
+# baseURI: http://purl.org/agreements
+# imports: http://purl.org/goodrelations/v1
+# imports: http://purl.org/metrics
+# imports: http://qudt.org/schema/qudt
+# imports: http://qudt.org/vocab/unit
+# imports: http://www.linked-usdl.org/ns/usdl-business-roles#
+# imports: http://www.linked-usdl.org/ns/usdl-core
+# imports: http://www.w3.org/2001/sw/BestPractices/OEP/SimplePartWhole/part.owl
+# imports: http://www.w3.org/2004/02/skos/core
+# imports: http://www.w3.org/2006/time#
+
+@prefix :        <http://purl.org/agreements#> .
+@prefix metrics:  <http://purl.org/metrics#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix part:    <http://www.w3.org/2001/sw/BestPractices/OEP/SimplePartWhole/part.owl#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix spin:    <http://spinrdf.org/spin#> .
+@prefix time:    <http://www.w3.org/2006/time#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+<http://purl.org/agreements>
+      rdf:type owl:Ontology ;
+      spin:imports <http://topbraid.org/spin/rdfsplus> ;
+      owl:imports <http://qudt.org/schema/qudt> , <http://qudt.org/vocab/unit> , <http://purl.org/metrics> , time: , <http://www.w3.org/2004/02/skos/core> , <http://www.linked-usdl.org/ns/usdl-core> , <http://www.w3.org/2001/sw/BestPractices/OEP/SimplePartWhole/part.owl> , <http://purl.org/goodrelations/v1> , <http://www.linked-usdl.org/ns/usdl-business-roles#> ;
+      owl:versionInfo "Created with TopBraid Composer"^^xsd:string .
+
+:AgreementCondition
+      rdf:type rdfs:Class , owl:Class ;
+      rdfs:comment "An Agreement Condition represent a constraint about a service property that can be checked within the terms of a service level agreement"^^xsd:string ;
+      rdfs:label "Agreement condition"^^xsd:string .
+
+:BetweenGuaranteedValue
+      rdf:type rdfs:Class ;
+      rdfs:label "Between guaranteed value"^^xsd:string ;
+      rdfs:subClassOf :AgreementCondition .
+
+:GuaranteeTerm
+      rdf:type rdfs:Class , owl:Class ;
+      rdfs:comment "A Guarantee Term represents a single term of a service level agreement"^^xsd:string ;
+      rdfs:label "Guarantee Term"^^xsd:string .
+
+:GuaranteedValue
+      rdf:type rdfs:Class ;
+      rdfs:label "Guaranteed value"^^xsd:string ;
+      rdfs:subClassOf :AgreementCondition .
+
+:MaxGuaranteedValue
+      rdf:type rdfs:Class ;
+      rdfs:label "Max guaranteed value"^^xsd:string ;
+      rdfs:subClassOf :AgreementCondition .
+
+:MinGuaranteedValue
+      rdf:type rdfs:Class ;
+      rdfs:label "Min guaranteed value"^^xsd:string ;
+      rdfs:subClassOf :AgreementCondition .
+
+:complyWith
+      rdf:type owl:ObjectProperty ;
+      rdfs:comment "Refers to the AgreementTerm that defines the corresponding agreement for a particular service offering"^^xsd:string ;
+      rdfs:domain <http://www.linked-usdl.org/ns/usdl-core#ServiceOffering> ;
+      rdfs:label "comply with"^^xsd:string ;
+      rdfs:range :GuaranteeTerm .
+
+:guaranteedOver
+      rdf:type owl:ObjectProperty ;
+      rdfs:comment "Captures the concrete service over a certain term is guaranteed"^^xsd:string ;
+      rdfs:domain :GuaranteeTerm ;
+      rdfs:label "guaranteed over"^^xsd:string ;
+      rdfs:range <http://www.linked-usdl.org/ns/usdl-core#Service> .
+
+:guarantees
+      rdf:type owl:ObjectProperty ;
+      rdfs:comment "Defines the condition that is guaranteed to be fulfilled by a guarantee term of a service level agreement"^^xsd:string ;
+      rdfs:domain :GuaranteeTerm ;
+      rdfs:label "guarantees"^^xsd:string ;
+      rdfs:range :AgreementCondition .
+
+:hasCompensation
+      rdf:type owl:ObjectProperty ;
+      rdfs:comment "Supports the definition of compensations in case the guarantee term is not fulfilled.  A compensation is defined in terms of an alternative guarantee term that will be fulfilled instead of the original guaranteed condition."^^xsd:string ;
+      rdfs:domain :GuaranteeTerm ;
+      rdfs:label "has compensation"^^xsd:string ;
+      rdfs:range :GuaranteeTerm .
+
+:hasMetric
+      rdf:type owl:ObjectProperty ;
+      rdfs:label "has metric"^^xsd:string .
+
+:hasObligedEntityInvolvement
+      rdf:type owl:ObjectProperty ;
+      rdfs:comment "Captures which involved entity (possibly unidentified business entity with a role) is obliged to guarantee a term of the agreement."^^xsd:string ;
+      rdfs:domain :GuaranteeTerm ;
+      rdfs:label "has obliged entity involvement"^^xsd:string ;
+      rdfs:range <http://www.linked-usdl.org/ns/usdl-core#EntityInvolvement> .
+
+:hasPrecondition
+      rdf:type owl:ObjectProperty ;
+      rdfs:comment "States the precondition that has to be met to guarantee the agreement term. Preconditions are defined on service properties, therefore an Agreement Condition instance is used to represent them."^^xsd:string ;
+      rdfs:domain :GuaranteeTerm ;
+      rdfs:range :AgreementCondition .
+
+:hasValue
+      rdf:type owl:ObjectProperty ;
+      rdfs:comment "Captures the value of the referred service property that will be checked in order to evaluate an agreement condition. This value can be an explicit qualitative or quantitative value (depending on the nature of the referred property) or a metric definition to compute the actual value in runtime."^^xsd:string ;
+      rdfs:domain :AgreementCondition ;
+      rdfs:label "has value"^^xsd:string ;
+      rdfs:range
+              [ rdf:type owl:Class ;
+                owl:unionOf (<http://purl.org/goodrelations/v1#QuantitativeValue> <http://purl.org/goodrelations/v1#QualitativeValue> metrics:Metric)
+              ] .
+
+:refersTo
+      rdf:type owl:ObjectProperty ;
+      rdfs:comment "Captures the service property which the agreement condition is referring to. This property can be either a qualitative property or a quantitative one, as they are defined in GoodRelations"^^xsd:string ;
+      rdfs:domain :AgreementCondition ;
+      rdfs:label "refers to"^^xsd:string ;
+      rdfs:range
+              [ rdf:type owl:Class ;
+                owl:unionOf ([ rdf:type owl:Restriction ;
+                            owl:hasValue <http://purl.org/goodrelations/v1#qualitativeProductOrServiceProperty> ;
+                            owl:onProperty rdfs:subPropertyOf
+                          ] [ rdf:type owl:Restriction ;
+                            owl:hasValue <http://purl.org/goodrelations/v1#quantitativeProductOrServiceProperty> ;
+                            owl:onProperty rdfs:subPropertyOf
+                          ])
+              ] .

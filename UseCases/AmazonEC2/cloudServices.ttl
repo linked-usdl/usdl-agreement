@@ -1,0 +1,157 @@
+# baseURI: http://purl.org/cloudServices
+# imports: http://purl.org/agreements
+# imports: http://purl.org/goodrelations/v1
+# imports: http://qudt.org/schema/qudt
+# imports: http://qudt.org/vocab/unit
+# imports: http://www.linked-usdl.org/ns/usdl-core
+# imports: http://www.w3.org/2004/02/skos/core
+
+@prefix :        <http://purl.org/cloudServices#> .
+@prefix ag:      <http://purl.org/agreements#> .
+@prefix gr:      <http://purl.org/goodrelations/v1#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix qudt:    <http://qudt.org/schema/qudt#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+<http://purl.org/cloudServices>
+      rdf:type owl:Ontology ;
+      owl:imports <http://www.linked-usdl.org/ns/usdl-core> , <http://www.w3.org/2004/02/skos/core> , <http://qudt.org/schema/qudt> , <http://qudt.org/vocab/unit> , <http://purl.org/goodrelations/v1> , <http://purl.org/agreements> ;
+      owl:versionInfo "Created with TopBraid Composer"^^xsd:string .
+
+:CloudService
+      rdf:type owl:Class ;
+      rdfs:label "Cloud service"^^xsd:string ;
+      rdfs:subClassOf <http://www.linked-usdl.org/ns/usdl-core#Service> .
+
+:ComputationService
+      rdf:type owl:Class ;
+      rdfs:label "Computation service"^^xsd:string ;
+      rdfs:subClassOf :IaaSCloudService .
+
+:Gibibyte
+      rdf:type qudt:DerivedUnit , qudt:InformationEntropyUnit ;
+      rdfs:label "Gibibyte"^^xsd:string ;
+      qudt:abbreviation "GiB"^^xsd:string ;
+      qudt:conversionMultiplier
+              "5954088938.82925056"^^xsd:double ;
+      qudt:conversionOffset
+              "0.0"^^xsd:double ;
+      qudt:description "The gibibyte is a standards-based binary multiple (prefix gibi, symbol Gi) of the byte, a unit of digital information storage."^^xsd:string ;
+      qudt:symbol "GiB"^^xsd:string ;
+      skos:exactMatch <http://dbpedia.org/resource/Gibibyte> .
+
+:Gigabyte
+      rdf:type qudt:DerivedUnit , qudt:InformationEntropyUnit ;
+      rdfs:label "Gigabyte"^^xsd:string ;
+      qudt:abbreviation "GB"^^xsd:string ;
+      qudt:conversionMultiplier
+              5.54517744e9 ;
+      qudt:conversionOffset
+              "0.0"^^xsd:double ;
+      qudt:symbol "GB"^^xsd:string ;
+      skos:exactMatch <http://dbpedia.org/resource/Gigabyte> .
+
+:HighIOPerformance
+      rdf:type :IOPerformanceValue ;
+      rdfs:label "High IOPerformance"^^xsd:string ;
+      gr:greater :ModerateIOPerformance ;
+      gr:lesser :VeryHighIOPerformance .
+
+:IOPerformanceValue
+      rdf:type owl:Class ;
+      rdfs:label "IOPerformance value"^^xsd:string ;
+      rdfs:subClassOf gr:QualitativeValue .
+
+:IaaSCloudService
+      rdf:type owl:Class ;
+      rdfs:label "Iaa SCloud service"^^xsd:string ;
+      rdfs:subClassOf :CloudService .
+
+:LowIOPerformance
+      rdf:type :IOPerformanceValue ;
+      rdfs:label "Low IOPerformance"^^xsd:string ;
+      gr:lesser :ModerateIOPerformance .
+
+:Mebibyte
+      rdf:type qudt:DerivedUnit , qudt:InformationEntropyUnit ;
+      rdfs:label "Mebibyte"^^xsd:string ;
+      qudt:abbreviation "MiB"^^xsd:string ;
+      qudt:conversionMultiplier
+              "5814539.97932544"^^xsd:double ;
+      qudt:conversionOffset
+              "0.0"^^xsd:double ;
+      qudt:description "The mebibyte is a multiple of the unit byte for digital information"^^xsd:string ;
+      qudt:symbol "MiB"^^xsd:string ;
+      skos:exactMatch <http://dbpedia.org/resource/Mebibyte> .
+
+:ModerateIOPerformance
+      rdf:type :IOPerformanceValue ;
+      rdfs:label "Moderate IOPerformance"^^xsd:string ;
+      gr:greater :LowIOPerformance ;
+      gr:lesser :HighIOPerformance .
+
+:PaaSCloudService
+      rdf:type owl:Class ;
+      rdfs:label "Paa SCloud service"^^xsd:string ;
+      rdfs:subClassOf :CloudService .
+
+:SaaSCloudService
+      rdf:type owl:Class ;
+      rdfs:label "Saa SCloud service"^^xsd:string ;
+      rdfs:subClassOf :CloudService .
+
+:StorageService
+      rdf:type owl:Class ;
+      rdfs:label "Storage service"^^xsd:string ;
+      rdfs:subClassOf :IaaSCloudService .
+
+:Tebibyte
+      rdf:type qudt:InformationEntropyUnit , qudt:DerivedUnit ;
+      rdfs:label "Tebibyte"^^xsd:string ;
+      qudt:abbreviation "TiB"^^xsd:string ;
+      qudt:conversionMultiplier
+              "6096987073361.15257344"^^xsd:double ;
+      qudt:conversionOffset
+              "0.0"^^xsd:double ;
+      qudt:description "The tebibyte is a standards-based binary multiple (prefix tebi, symbol Ti) of the byte, a unit of digital information storage."^^xsd:string ;
+      qudt:symbol "TiB"^^xsd:string ;
+      skos:exactMatch <http://dbpedia.org/resource/Tebibyte> .
+
+:VeryHighIOPerformance
+      rdf:type :IOPerformanceValue ;
+      rdfs:label "Very high IOPerformance"^^xsd:string ;
+      gr:greater :HighIOPerformance .
+
+:hasComputingPerformance a rdf:Property;
+      rdfs:domain :ComputationService ;
+      rdfs:label "has memory"^^xsd:string ;
+      rdfs:range gr:QuantitativeValue ;
+      rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty .
+
+:hasIOPerformance a rdf:Property;
+      rdfs:domain
+              [ rdf:type owl:Class ;
+                owl:unionOf (:ComputationService :StorageService)
+              ] ;
+      rdfs:label "has IOPerformance"^^xsd:string .
+
+:hasInternalStorage a rdf:Property;
+      rdfs:domain :ComputationService ;
+      rdfs:label "has internal storage"^^xsd:string ;
+      rdfs:range gr:QuantitativeValue ;
+      rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty .
+
+:hasMemory rdf:type rdf:Property;
+      rdfs:domain :ComputationService ;
+      rdfs:label "has memory"^^xsd:string ;
+      rdfs:range gr:QuantitativeValue ;
+      rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty .
+
+:hasVirtualCores a rdf:Property;
+      rdfs:domain :ComputationService ;
+      rdfs:label "has virtual cores"^^xsd:string ;
+      rdfs:range gr:QuantitativeValue ;
+      rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty .
