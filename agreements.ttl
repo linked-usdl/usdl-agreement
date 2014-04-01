@@ -9,7 +9,7 @@
 # imports: http://www.w3.org/2004/02/skos/core
 # imports: http://www.w3.org/2006/time#
 
-@prefix :        <http://purl.org/agreements#> .
+@prefix :        <http://www.linked-usdl.org/ns/usdl-agreement#> .
 @prefix metrics:  <http://purl.org/metrics#> .
 @prefix owl:     <http://www.w3.org/2002/07/owl#> .
 @prefix part:    <http://www.w3.org/2001/sw/BestPractices/OEP/SimplePartWhole/part.owl#> .
