@@ -74,7 +74,7 @@
 	rdfs:label "Min guaranteed value"^^xsd:string ;
 	rdfs:subClassOf :AgreementCondition .
 
-:complyWith
+:compliesWith
 	rdf:type owl:ObjectProperty ;
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
 	rdfs:comment "Refers to the AgreementTerm that defines the corresponding agreement for a particular service offering"^^xsd:string ;
