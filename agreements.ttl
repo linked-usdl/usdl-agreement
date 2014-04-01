@@ -12,7 +12,6 @@
 @prefix :        <http://www.linked-usdl.org/ns/usdl-agreement#> .
 @prefix metrics:  <http://purl.org/metrics#> .
 @prefix owl:     <http://www.w3.org/2002/07/owl#> .
-@prefix part:    <http://www.w3.org/2001/sw/BestPractices/OEP/SimplePartWhole/part.owl#> .
 @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix spin:    <http://spinrdf.org/spin#> .
@@ -22,7 +21,7 @@
 <http://purl.org/agreements>
       rdf:type owl:Ontology ;
       spin:imports <http://topbraid.org/spin/rdfsplus> ;
-      owl:imports <http://qudt.org/schema/qudt> , <http://qudt.org/vocab/unit> , <http://purl.org/metrics> , time: , <http://www.w3.org/2004/02/skos/core> , <http://www.linked-usdl.org/ns/usdl-core> , <http://www.w3.org/2001/sw/BestPractices/OEP/SimplePartWhole/part.owl> , <http://purl.org/goodrelations/v1> , <http://www.linked-usdl.org/ns/usdl-business-roles#> ;
+      owl:imports <http://qudt.org/schema/qudt> , <http://qudt.org/vocab/unit> , <http://purl.org/metrics> , time: , <http://www.w3.org/2004/02/skos/core> , <http://www.linked-usdl.org/ns/usdl-core> , <http://purl.org/goodrelations/v1> , <http://www.linked-usdl.org/ns/usdl-business-roles#> ;
       owl:versionInfo "Created with TopBraid Composer"^^xsd:string .
 
 :AgreementCondition
