@@ -113,6 +113,7 @@
 
 :hasObligedEntityInvolvement
 	rdf:type owl:ObjectProperty ;
+	rdfs:subPropertyOf usdl-core:hasEntityInvolvement ;
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
 	rdfs:comment "Captures which involved entity (possibly unidentified business entity with a role) is obliged to guarantee a term of the agreement."^^xsd:string ;
 	rdfs:domain :GuaranteeTerm ;
