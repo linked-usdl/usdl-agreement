@@ -5,7 +5,6 @@
 # imports: http://qudt.org/vocab/unit
 # imports: http://www.linked-usdl.org/ns/usdl-business-roles#
 # imports: http://www.linked-usdl.org/ns/usdl-core
-# imports: http://www.w3.org/2001/sw/BestPractices/OEP/SimplePartWhole/part.owl
 # imports: http://www.w3.org/2004/02/skos/core
 # imports: http://www.w3.org/2006/time#
 
@@ -21,6 +20,7 @@
 @prefix gr: 		<http://purl.org/goodrelations/v1#> .
 @prefix skos: 		<http://www.w3.org/2004/02/skos/core#> .
 @prefix time: 		<http://www.w3.org/2006/time#> .
+@prefix usdl-core: <http://www.linked-usdl.org/ns/usdl-core#> .
 @prefix spin:    	<http://spinrdf.org/spin#> .
 
 
@@ -78,7 +78,7 @@
 	rdf:type owl:ObjectProperty ;
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
 	rdfs:comment "Refers to the AgreementTerm that defines the corresponding agreement for a particular service offering"^^xsd:string ;
-	rdfs:domain <http://www.linked-usdl.org/ns/usdl-core#ServiceOffering> ;
+	rdfs:domain usdl-core:ServiceOffering ;
 	rdfs:label "comply with"^^xsd:string ;
 	rdfs:range :GuaranteeTerm .
 
@@ -88,7 +88,7 @@
 	rdfs:comment "Captures the concrete service over a certain term is guaranteed"^^xsd:string ;
 	rdfs:domain :GuaranteeTerm ;
 	rdfs:label "guaranteed over"^^xsd:string ;
-	rdfs:range <http://www.linked-usdl.org/ns/usdl-core#Service> .
+	rdfs:range usdl-core:Service .
 
 :guarantees
 	rdf:type owl:ObjectProperty ;
@@ -117,7 +117,7 @@
 	rdfs:comment "Captures which involved entity (possibly unidentified business entity with a role) is obliged to guarantee a term of the agreement."^^xsd:string ;
 	rdfs:domain :GuaranteeTerm ;
 	rdfs:label "has obliged entity involvement"^^xsd:string ;
-	rdfs:range <http://www.linked-usdl.org/ns/usdl-core#EntityInvolvement> .
+	rdfs:range usdl-core:EntityInvolvement .
 
 :hasPrecondition
 	rdf:type owl:ObjectProperty ;
@@ -134,7 +134,7 @@
 	rdfs:label "has value"^^xsd:string ;
 	rdfs:range
 		[ rdf:type owl:Class ;
-			owl:unionOf (<http://purl.org/goodrelations/v1#QuantitativeValue> <http://purl.org/goodrelations/v1#QualitativeValue> metrics:Metric)
+			owl:unionOf (gr:QuantitativeValue gr:QualitativeValue metrics:Metric)
 		] .
 
 :refersTo
@@ -147,11 +147,11 @@
 		[ rdf:type owl:Class ;
 			owl:unionOf (
 				[ rdf:type owl:Restriction ;
-					owl:hasValue <http://purl.org/goodrelations/v1#qualitativeProductOrServiceProperty> ;
+					owl:hasValue gr:qualitativeProductOrServiceProperty ;
 					owl:onProperty rdfs:subPropertyOf
 				] 
 				[ rdf:type owl:Restriction ;
-					owl:hasValue <http://purl.org/goodrelations/v1#quantitativeProductOrServiceProperty> ;
+					owl:hasValue gr:quantitativeProductOrServiceProperty ;
 					owl:onProperty rdfs:subPropertyOf
 				]
 			)
