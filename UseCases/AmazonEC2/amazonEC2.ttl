@@ -38,7 +38,7 @@
 
 :amazonEC2ServiceOfferingM1LargeInstanceType
       rdf:type usdl:ServiceOffering ;
-      ag:complyWith :ec2ServiceCommitment ;
+      ag:compliesWith :ec2ServiceCommitment ;
       usdl:includes :ec2M1LargeInstanceType .
 
 :annualUptimeMetric
