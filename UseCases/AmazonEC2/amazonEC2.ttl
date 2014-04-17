@@ -459,12 +459,12 @@
               [ rdf:type ag:MinGuaranteedValue ;
                 ag:hasValue
                         [ rdf:type gr:QuantitativeValueFloat ;
-                          gr:hasValueFloat "99.9"^^xsd:float
+                          gr:hasValueFloat "99.95"^^xsd:float
                         ] ;
                 ag:refersTo :annualUptimePercentage ;
                 qudt:unit <http://qudt.org/vocab/unit#Percent>
               ] ;
-      ag:hasCompensation :ec2ServiceCredit10 .
+      ag:hasCompensation :ec2ServiceCredit10 , :ec2ServiceCredit30 .
 
 #old compensation. note that it was previously an AgreementCondition
 :ec2ServiceCredit
@@ -494,18 +494,26 @@
                         ] ;
                 ag:refersTo :annualUptimePercentage ;
                 qudt:unit <http://qudt.org/vocab/unit#Percent>
-              ] ;
-      ag:hasCompensation ec2ServiceCredit25.
+              ] .
 
-:ec2ServiceCredit25
+:ec2ServiceCredit30
       rdf:type ag:GuaranteeTerm ;
       ag:guarantees
                [ rdf:type ag:GuaranteedValue ;
                  ag:hasValue
                          [ rdf:type gr:QuantitativeValueFloat ;
-                           gr:hasValueFloat "25"^^xsd:float
+                           gr:hasValueFloat "30"^^xsd:float
                          ] ;
                  ag:refersTo :ServiceCreditPercentage .
+                qudt:unit <http://qudt.org/vocab/unit#Percent>
+              ] ;
+      ag:hasPrecondition
+              [ rdf:type ag:MaxGuaranteedValue ;
+                ag:hasValue
+                        [ rdf:type gr:QuantitativeValueFloat ;
+                          gr:hasValueFloat "99"^^xsd:float
+                        ] ;
+                ag:refersTo :annualUptimePercentage ;
                 qudt:unit <http://qudt.org/vocab/unit#Percent>
               ] .
  
