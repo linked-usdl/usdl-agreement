@@ -12,7 +12,8 @@
 @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
-@prefix usdl:  <http://www.linked-usdl.org/ns/usdl-core#> .
+@prefix usdl-core:  <http://www.linked-usdl.org/ns/usdl-core#> .
+@prefix usdl-br:	<http://www.linked-usdl.org/ns/usdl-business-roles#> .
 @prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
 
 <http://purl.org/cloudComputing/amazonEC2>
@@ -20,6 +21,23 @@
       owl:imports <http://purl.org/cloudServices> , <http://qudt.org/spin/unitconversion> ;
       owl:versionInfo "Created with TopBraid Composer"^^xsd:string .
 
+# BusinessEntity description for Amazon
+:entity_Amazon
+      rdf:type gr:BusinessEntity ;
+      vcard:adr
+              [ rdf:type vcard:Work ;
+                vcard:country-name "U.S."@en
+              ] ;
+      foaf:homepage <http://aws.amazon.com/> ;
+      foaf:logo <http://d36cz9buwru1tt.cloudfront.net/logo_aws.gif> ;
+      foaf:name "Amazon Web Services LLC" .
+	  
+:involvement_Amazon
+      rdf:type usdl-core:EntityInvolvement ;
+	  usdl-core:ofBusinessEntity :entity_Amazon ;
+	  usdl-core:withBusinessRole usdl-br:provider .
+	  
+# Specific unit used by Amazon
 :EC2ComputeUnit
       rdf:type qudt:ComputingUnit , qudt:ResourceUnit ;
       rdfs:label "EC2 compute unit"^^xsd:string ;
@@ -32,29 +50,11 @@
       qudt:symbol "ECU"^^xsd:string ;
       skos:exactMatch <http://dbpedia.org/resource/Elastic_compute_unit> .
 
-:ServiceCreditPercentage
-      rdf:type owl:ObjectProperty ;
-      rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty .
-
-:amazonEC2ServiceOfferingM1LargeInstanceType
-      rdf:type usdl:ServiceOffering ;
-      ag:compliesWith :ec2ServiceCommitment ;
-      usdl:includes :ec2M1LargeInstanceType .
-
-:annualUptimeMetric
-      rdf:type metrics:Metric ;
-      metrics:hasExpression
-              "100 - (100 * (?regionUnavailable % 5) / 105120)"^^xsd:string ;
-      qudt:unit <http://qudt.org/vocab/unit#Percent> .
-
-:annualUptimePercentage
-      rdf:type rdf:Property ;
-      ag:hasMetric :annualUptimeMetric .
-      rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty 
-
+# Individual services provided by Amazon
 :ec2ClusterComputeEightExtraLargeInstanceType
       rdf:type cloud:ComputationService ;
       rdfs:label "amazon elastic compute cloud service m1.small instance"^^xsd:string ;
+      usdl-core:hasEntityInvolvement :involvement_Amazon ;
       cloud:hasComputingPerformance
               [ rdf:type gr:QuantitativeValueFloat ;
                 gr:hasValueFloat "88"^^xsd:float ;
@@ -81,6 +81,7 @@
 :ec2ClusterComputeQuadrupleExtraLargeInstanceType
       rdf:type cloud:ComputationService ;
       rdfs:label "amazon elastic compute cloud service m1.small instance"^^xsd:string ;
+      usdl-core:hasEntityInvolvement :involvement_Amazon ;
       cloud:hasComputingPerformance
               [ rdf:type gr:QuantitativeValueFloat ;
                 gr:hasValueFloat "33.5"^^xsd:float ;
@@ -107,6 +108,7 @@
 :ec2ClusterGPUQuadrupleExtraLargeInstanceType
       rdf:type cloud:ComputationService ;
       rdfs:label "amazon elastic compute cloud service m1.small instance"^^xsd:string ;
+      usdl-core:hasEntityInvolvement :involvement_Amazon ;
       cloud:hasComputingPerformance
               [ rdf:type gr:QuantitativeValueFloat ;
                 gr:hasValueFloat "33.5"^^xsd:float ;
@@ -133,6 +135,7 @@
 :ec2HighCPUExtraLargeInstanceType
       rdf:type cloud:ComputationService ;
       rdfs:label "amazon elastic compute cloud service m1.small instance"^^xsd:string ;
+      usdl-core:hasEntityInvolvement :involvement_Amazon ;
       cloud:hasComputingPerformance
               [ rdf:type gr:QuantitativeValueFloat ;
                 gr:hasValueFloat "20"^^xsd:float ;
@@ -159,6 +162,7 @@
 :ec2HighCPUMediumInstanceType
       rdf:type cloud:ComputationService ;
       rdfs:label "amazon elastic compute cloud service m1.small instance"^^xsd:string ;
+      usdl-core:hasEntityInvolvement :involvement_Amazon ;
       cloud:hasComputingPerformance
               [ rdf:type gr:QuantitativeValueFloat ;
                 gr:hasValueFloat "5"^^xsd:float ;
@@ -185,6 +189,7 @@
 :ec2HighIOQuadrupleExtraLargeInstanceType
       rdf:type cloud:ComputationService ;
       rdfs:label "amazon elastic compute cloud service m1.small instance"^^xsd:string ;
+      usdl-core:hasEntityInvolvement :involvement_Amazon ;
       cloud:hasComputingPerformance
               [ rdf:type gr:QuantitativeValueFloat ;
                 gr:hasValueFloat "35"^^xsd:float ;
@@ -211,6 +216,7 @@
 :ec2HighMemoryDoubleExtraLargeInstanceType
       rdf:type cloud:ComputationService ;
       rdfs:label "amazon elastic compute cloud service m1.small instance"^^xsd:string ;
+      usdl-core:hasEntityInvolvement :involvement_Amazon ;
       cloud:hasComputingPerformance
               [ rdf:type gr:QuantitativeValueFloat ;
                 gr:hasValueFloat "13"^^xsd:float ;
@@ -237,6 +243,7 @@
 :ec2HighMemoryExtraLargeInstanceType
       rdf:type cloud:ComputationService ;
       rdfs:label "amazon elastic compute cloud service m1.small instance"^^xsd:string ;
+      usdl-core:hasEntityInvolvement :involvement_Amazon ;
       cloud:hasComputingPerformance
               [ rdf:type gr:QuantitativeValueFloat ;
                 gr:hasValueFloat "6.5"^^xsd:float ;
@@ -263,6 +270,7 @@
 :ec2HighMemoryQuadrupleExtraLargeInstanceType
       rdf:type cloud:ComputationService ;
       rdfs:label "amazon elastic compute cloud service m1.small instance"^^xsd:string ;
+      usdl-core:hasEntityInvolvement :involvement_Amazon ;
       cloud:hasComputingPerformance
               [ rdf:type gr:QuantitativeValueFloat ;
                 gr:hasValueFloat "26"^^xsd:float ;
@@ -289,6 +297,7 @@
 :ec2M1ExtraLargeInstanceType
       rdf:type cloud:ComputationService ;
       rdfs:label "amazon elastic compute cloud service m1.small instance"^^xsd:string ;
+      usdl-core:hasEntityInvolvement :involvement_Amazon ;
       cloud:hasComputingPerformance
               [ rdf:type gr:QuantitativeValueFloat ;
                 gr:hasValueFloat "8"^^xsd:float ;
@@ -315,6 +324,7 @@
 :ec2M1LargeInstanceType
       rdf:type cloud:ComputationService ;
       rdfs:label "amazon elastic compute cloud service m1.small instance"^^xsd:string ;
+      usdl-core:hasEntityInvolvement :involvement_Amazon ;
       cloud:hasComputingPerformance
               [ rdf:type gr:QuantitativeValueFloat ;
                 gr:hasValueFloat "4"^^xsd:float ;
@@ -341,6 +351,7 @@
 :ec2M1MediumInstanceService
       rdf:type cloud:ComputationService ;
       rdfs:label "amazon elastic compute cloud service m1.small instance"^^xsd:string ;
+      usdl-core:hasEntityInvolvement :involvement_Amazon ;
       cloud:hasComputingPerformance
               [ rdf:type gr:QuantitativeValueFloat ;
                 gr:hasValueFloat "2"^^xsd:float ;
@@ -367,6 +378,7 @@
 :ec2M1SmallInstanceService
       rdf:type cloud:ComputationService ;
       rdfs:label "amazon elastic compute cloud service m1.small instance"^^xsd:string ;
+      usdl-core:hasEntityInvolvement :involvement_Amazon ;
       cloud:hasComputingPerformance
               [ rdf:type gr:QuantitativeValueFloat ;
                 gr:hasValueFloat "1"^^xsd:float ;
@@ -393,6 +405,7 @@
 :ec2M3DoubleExtraLargeInstanceType
       rdf:type cloud:ComputationService ;
       rdfs:label "amazon elastic compute cloud service m1.small instance"^^xsd:string ;
+      usdl-core:hasEntityInvolvement :involvement_Amazon ;
       cloud:hasComputingPerformance
               [ rdf:type gr:QuantitativeValueFloat ;
                 gr:hasValueFloat "26"^^xsd:float ;
@@ -414,6 +427,7 @@
 :ec2M3ExtraLargeInstanceType
       rdf:type cloud:ComputationService ;
       rdfs:label "amazon elastic compute cloud service m1.small instance"^^xsd:string ;
+      usdl-core:hasEntityInvolvement :involvement_Amazon ;
       cloud:hasComputingPerformance
               [ rdf:type gr:QuantitativeValueFloat ;
                 gr:hasValueFloat "13"^^xsd:float ;
@@ -435,6 +449,7 @@
 :ec2MicroInstanceType
       rdf:type cloud:ComputationService ;
       rdfs:label "amazon elastic compute cloud service m1.small instance"^^xsd:string ;
+      usdl-core:hasEntityInvolvement :involvement_Amazon ;
       cloud:hasComputingPerformance
               [ rdf:type gr:QuantitativeValueFloat ;
                 gr:hasMaxValueFloat "2"^^xsd:float ;
@@ -453,6 +468,28 @@
                 qudt:unit <http://qudt.org/vocab/unit#Number>
               ] .
 
+# Service properties relevant to the SLA
+:ServiceCreditPercentage
+      rdf:type owl:ObjectProperty ;
+      rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty .
+
+:annualUptimeMetric
+      rdf:type metrics:Metric ;
+      metrics:hasExpression
+              "100 - (100 * (?regionUnavailable % 5) / 105120)"^^xsd:string ;
+      qudt:unit <http://qudt.org/vocab/unit#Percent> .
+
+:annualUptimePercentage
+      rdf:type rdf:Property ;
+      ag:hasMetric :annualUptimeMetric .
+      rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty 
+	  
+# Sample service offering including SLA
+:amazonEC2ServiceOfferingM1LargeInstanceType
+      rdf:type usdl-core:ServiceOffering ;
+      ag:compliesWith :ec2ServiceCommitment ;
+      usdl-core:includes :ec2M1LargeInstanceType .
+			  
 :ec2ServiceCommitment
       rdf:type ag:GuaranteeTerm ;
       ag:guarantees
@@ -466,15 +503,7 @@
               ] ;
       ag:hasCompensation :ec2ServiceCredit10 , :ec2ServiceCredit30 .
 
-#old compensation. note that it was previously an AgreementCondition
-:ec2ServiceCredit
-      rdf:type ag:GuaranteedValue ;
-      ag:hasValue
-              [ rdf:type gr:QuantitativeValueFloat ;
-                gr:hasValueFloat "10"^^xsd:float
-              ] ;
-      ag:refersTo :ServiceCreditPercentage .
-      
+# Compensations
 :ec2ServiceCredit10
       rdf:type ag:GuaranteeTerm ;
       ag:guarantees
