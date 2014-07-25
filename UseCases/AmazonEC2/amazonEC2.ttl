@@ -492,6 +492,8 @@
 			  
 :ec2ServiceCommitment
       rdf:type ag:GuaranteeTerm ;
+	  ag:guaranteedOver :ec2M1LargeInstanceType ;
+	  ag:hasObligedEntityInvolvement :involvement_Amazon ;
       ag:guarantees
               [ rdf:type ag:MinGuaranteedValue ;
                 ag:hasValue
@@ -506,6 +508,7 @@
 # Compensations
 :ec2ServiceCredit10
       rdf:type ag:GuaranteeTerm ;
+	  ag:hasObligedEntityInvolvement :involvement_Amazon ;
       ag:guarantees
                [ rdf:type ag:GuaranteedValue ;
                  ag:hasValue
@@ -527,6 +530,7 @@
 
 :ec2ServiceCredit30
       rdf:type ag:GuaranteeTerm ;
+	  ag:hasObligedEntityInvolvement :involvement_Amazon ;
       ag:guarantees
                [ rdf:type ag:GuaranteedValue ;
                  ag:hasValue
