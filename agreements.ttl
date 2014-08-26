@@ -38,17 +38,7 @@
 	vann:preferredNamespacePrefix "usdl-agreement";
 	owl:versionInfo "0.1"^^xsd:string .
 
-:AgreementCondition
-	rdf:type rdfs:Class , owl:Class ;
-	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
-	rdfs:comment "An Agreement Condition represent a constraint about a service property that can be checked within the terms of a service level agreement"^^xsd:string ;
-	rdfs:label "Agreement condition"^^xsd:string .
-
-:BetweenGuaranteedValue
-	rdf:type rdfs:Class ;
-	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
-	rdfs:label "Between guaranteed value"^^xsd:string ;
-	rdfs:subClassOf :AgreementCondition .
+# Main classes
 
 :AgreementTerm
 	rdf:type rdfs:Class , owl:Class ;
@@ -70,10 +60,24 @@
 	rdfs:label "Compensation"^^xsd:string ;
 	rdfs:subClassOf :AgreementTerm .
 
+# Agreement Conditions class hierarchy
+
+:AgreementCondition
+	rdf:type rdfs:Class , owl:Class ;
+	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
+	rdfs:comment "An Agreement Condition represent a constraint about a service property that can be checked within the terms of a service level agreement"^^xsd:string ;
+	rdfs:label "Agreement condition"^^xsd:string .
+
 :GuaranteedValue
 	rdf:type rdfs:Class ;
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
 	rdfs:label "Guaranteed value"^^xsd:string ;
+	rdfs:subClassOf :AgreementCondition .
+
+:BetweenGuaranteedValue
+	rdf:type rdfs:Class ;
+	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
+	rdfs:label "Between guaranteed value"^^xsd:string ;
 	rdfs:subClassOf :AgreementCondition .
 
 :MaxGuaranteedValue
@@ -87,6 +91,8 @@
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
 	rdfs:label "Min guaranteed value"^^xsd:string ;
 	rdfs:subClassOf :AgreementCondition .
+
+# Properties
 
 :compliesWith
 	rdf:type owl:ObjectProperty ;
@@ -112,6 +118,13 @@
 	rdfs:label "guarantees"^^xsd:string ;
 	rdfs:range :AgreementCondition .
 
+:hasPrecondition
+	rdf:type owl:ObjectProperty ;
+	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
+	rdfs:comment "States the precondition that has to be met to guarantee the agreement term. Preconditions are defined on service properties, therefore an Agreement Condition instance is used to represent them."^^xsd:string ;
+	rdfs:domain :AgreementTerm ;
+	rdfs:range :AgreementCondition .
+
 :hasCompensation
 	rdf:type owl:ObjectProperty ;
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
@@ -119,11 +132,6 @@
 	rdfs:domain :Guarantee ;
 	rdfs:label "has compensation"^^xsd:string ;
 	rdfs:range :Compensation .
-
-:hasMetric
-	rdf:type owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
-	rdfs:label "has metric"^^xsd:string .
 
 :hasObligedEntityInvolvement
 	rdf:type owl:ObjectProperty ;
@@ -133,13 +141,6 @@
 	rdfs:domain :AgreementTerm ;
 	rdfs:label "has obliged entity involvement"^^xsd:string ;
 	rdfs:range usdl-core:EntityInvolvement .
-
-:hasPrecondition
-	rdf:type owl:ObjectProperty ;
-	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
-	rdfs:comment "States the precondition that has to be met to guarantee the agreement term. Preconditions are defined on service properties, therefore an Agreement Condition instance is used to represent them."^^xsd:string ;
-	rdfs:domain :AgreementTerm ;
-	rdfs:range :AgreementCondition .
 
 :hasValue
 	rdf:type owl:ObjectProperty ;
@@ -171,3 +172,8 @@
 				]
 			)
 		] .
+
+:hasMetric
+	rdf:type owl:ObjectProperty ;
+	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
+	rdfs:label "has metric"^^xsd:string .
