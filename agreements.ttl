@@ -159,6 +159,33 @@
 	rdfs:label "has metric provider entity involvement"^^xsd:string ;
 	rdfs:range usdl-core:EntityInvolvement .
 
+:hasValidityInterval
+	rdf:type owl:ObjectProperty ;
+	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
+	rdfs:label "has validity interval"^^xsd:string ;
+	rdfs:comment "Captures the validity interval of an agreement term."^^xsd:string ;
+	rdfs:domain :AgreementTerm;
+	rdfs:range time:Interval ;
+	rdfs:subPropertyOf usdl-core:spansInterval . # Not sure about this part.
+
+:hasEvaluationInterval
+	rdf:type owl:ObjectProperty ;
+	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
+	rdfs:label "has evaluation interval"^^xsd:string ;
+	rdfs:comment "Captures the evaluation interval of an agreement condition."^^xsd:string ;
+	rdfs:domain :AgreementCondition;
+	rdfs:range time:Interval ;
+	rdfs:subPropertyOf usdl-core:spansInterval . # Not sure about this part.
+
+:hasMeasuringInterval
+	rdf:type owl:ObjectProperty ;
+	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
+	rdfs:label "has measuring interval"^^xsd:string ;
+	rdfs:comment "Captures the measuring frequency of a metric."^^xsd:string ;
+	rdfs:domain :Metric;
+	rdfs:range time:Interval ;
+	rdfs:subPropertyOf usdl-core:spansInterval . # Not sure about this part.
+
 :hasValue
 	rdf:type owl:ObjectProperty ;
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
