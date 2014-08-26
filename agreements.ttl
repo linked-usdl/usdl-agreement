@@ -9,7 +9,6 @@
 # imports: http://www.w3.org/2006/time#
 
 @prefix :        	<http://www.linked-usdl.org/ns/usdl-agreement#> .
-@prefix metrics:	<http://purl.org/metrics#> .
 @prefix xsd: 		<http://www.w3.org/2001/XMLSchema#> .
 @prefix rdf: 		<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: 		<http://www.w3.org/2000/01/rdf-schema#> .
@@ -27,7 +26,7 @@
 <http://www.linked-usdl.org/ns/usdl-agreement>
 	rdf:type owl:Ontology ;
 	spin:imports <http://topbraid.org/spin/rdfsplus> ;
-	owl:imports <http://qudt.org/schema/qudt> , <http://qudt.org/vocab/unit> , <http://purl.org/metrics> , time: , <http://www.w3.org/2004/02/skos/core> , <http://www.linked-usdl.org/ns/usdl-core> , <http://purl.org/goodrelations/v1> , <http://www.linked-usdl.org/ns/usdl-business-roles#> ;
+	owl:imports <http://qudt.org/schema/qudt> , <http://qudt.org/vocab/unit> , time: , <http://www.w3.org/2004/02/skos/core> , <http://www.linked-usdl.org/ns/usdl-core> , <http://purl.org/goodrelations/v1> , <http://www.linked-usdl.org/ns/usdl-business-roles#> ;
 	rdfs:label "Linked USDL Agreement"@en ;
 	dcterms:title "Linked USDL Agreement"@en ;
 	dcterms:description """<p>This vocabulary is a Linked USDL module that provides support for modeling service agreements. 
@@ -142,6 +141,24 @@
 	rdfs:label "has obliged entity involvement"^^xsd:string ;
 	rdfs:range usdl-core:EntityInvolvement .
 
+:hasConditionEvaluationEntityInvolvement
+	rdf:type owl:ObjectProperty ;
+	rdfs:subPropertyOf usdl-core:hasEntityInvolvement ;
+	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
+	rdfs:comment "Captures which involved entity (possibly unidentified business entity with a role) is responsible for evaluating conditions."^^xsd:string ;
+	rdfs:domain :AgreementCondition ;
+	rdfs:label "has condition evaluation entity involvement"^^xsd:string ;
+	rdfs:range usdl-core:EntityInvolvement .
+
+:hasMetricProviderEntityInvolvement
+	rdf:type owl:ObjectProperty ;
+	rdfs:subPropertyOf usdl-core:hasEntityInvolvement ;
+	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
+	rdfs:comment "Captures which involved entity (possibly unidentified business entity with a role) is responsible for producing metrics measurements."^^xsd:string ;
+	rdfs:domain :Metric ;
+	rdfs:label "has metric provider entity involvement"^^xsd:string ;
+	rdfs:range usdl-core:EntityInvolvement .
+
 :hasValue
 	rdf:type owl:ObjectProperty ;
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
@@ -150,7 +167,7 @@
 	rdfs:label "has value"^^xsd:string ;
 	rdfs:range
 		[ rdf:type owl:Class ;
-			owl:unionOf (gr:QuantitativeValue gr:QualitativeValue metrics:Metric)
+			owl:unionOf (gr:QuantitativeValue gr:QualitativeValue :Metric)
 		] .
 
 :refersTo
@@ -172,6 +189,20 @@
 				]
 			)
 		] .
+
+:Metric
+	rdf:type owl:Class ;
+	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
+	rdfs:comment "Represent a metric used to measure a service property."^^xsd:string ;
+	rdfs:label "Metric"^^xsd:string ;
+	rdfs:subClassOf owl:Thing .
+
+:hasExpression
+	rdf:type owl:ObjectProperty ;
+	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
+	rdfs:domain :Metric ;
+	rdfs:label "has expression"^^xsd:string ;
+	rdfs:range rdfs:Resource .
 
 :hasMetric
 	rdf:type owl:ObjectProperty ;
