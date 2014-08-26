@@ -50,11 +50,25 @@
 	rdfs:label "Between guaranteed value"^^xsd:string ;
 	rdfs:subClassOf :AgreementCondition .
 
-:GuaranteeTerm
+:AgreementTerm
 	rdf:type rdfs:Class , owl:Class ;
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
-	rdfs:comment "A Guarantee Term represents a single term of a service level agreement"^^xsd:string ;
-	rdfs:label "Guarantee Term"^^xsd:string .
+	rdfs:comment "An Agreement Term represents a single term of a service level agreement"^^xsd:string ;
+	rdfs:label "Agreement Term"^^xsd:string .
+	
+:Guarantee
+	rdf:type rdfs:Class , owl:Class ;
+	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
+	rdfs:comment "A Guarantee represents an agreement term of a service level agreement that defines guarantees over service properties, and possibly compensations."^^xsd:string ;
+	rdfs:label "Guarantee"^^xsd:string ;
+	rdfs:subClassOf :AgreementTerm .
+
+:Compensation
+	rdf:type rdfs:Class , owl:Class ;
+	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
+	rdfs:comment "A Compensation is a specialization of an agreement term that represents an alternative term that will be guaranteed in case that the original guarantee term (associated with the compensation via hasCompensation property) is not fulfilled."^^xsd:string ;
+	rdfs:label "Compensation"^^xsd:string ;
+	rdfs:subClassOf :AgreementTerm .
 
 :GuaranteedValue
 	rdf:type rdfs:Class ;
@@ -77,34 +91,34 @@
 :compliesWith
 	rdf:type owl:ObjectProperty ;
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
-	rdfs:comment "Refers to the AgreementTerm that defines the corresponding agreement for a particular service offering"^^xsd:string ;
+	rdfs:comment "Refers to the Agreement Term that defines the corresponding agreement for a particular service offering"^^xsd:string ;
 	rdfs:domain usdl-core:ServiceOffering ;
-	rdfs:label "comply with"^^xsd:string ;
-	rdfs:range :GuaranteeTerm .
+	rdfs:label "complies with"^^xsd:string ;
+	rdfs:range :AgreementTerm .
 
 :guaranteedOver
 	rdf:type owl:ObjectProperty ;
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
 	rdfs:comment "Captures the concrete service over a certain term is guaranteed"^^xsd:string ;
-	rdfs:domain :GuaranteeTerm ;
+	rdfs:domain :AgreementTerm ;
 	rdfs:label "guaranteed over"^^xsd:string ;
 	rdfs:range usdl-core:Service .
 
 :guarantees
 	rdf:type owl:ObjectProperty ;
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
-	rdfs:comment "Defines the condition that is guaranteed to be fulfilled by a guarantee term of a service level agreement"^^xsd:string ;
-	rdfs:domain :GuaranteeTerm ;
+	rdfs:comment "Defines the condition that is guaranteed to be fulfilled by an agreement term of a service level agreement"^^xsd:string ;
+	rdfs:domain :AgreementTerm ;
 	rdfs:label "guarantees"^^xsd:string ;
 	rdfs:range :AgreementCondition .
 
 :hasCompensation
 	rdf:type owl:ObjectProperty ;
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
-	rdfs:comment "Supports the definition of compensations in case the guarantee term is not fulfilled.  A compensation is defined in terms of an alternative guarantee term that will be fulfilled instead of the original guaranteed condition."^^xsd:string ;
-	rdfs:domain :GuaranteeTerm ;
+	rdfs:comment "Supports the definition of compensations in case the guarantee term is not fulfilled.  A compensation is defined in terms of an alternative agreement term that will be fulfilled instead of the original guaranteed condition."^^xsd:string ;
+	rdfs:domain :Guarantee ;
 	rdfs:label "has compensation"^^xsd:string ;
-	rdfs:range :GuaranteeTerm .
+	rdfs:range :Compensation .
 
 :hasMetric
 	rdf:type owl:ObjectProperty ;
@@ -116,7 +130,7 @@
 	rdfs:subPropertyOf usdl-core:hasEntityInvolvement ;
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
 	rdfs:comment "Captures which involved entity (possibly unidentified business entity with a role) is obliged to guarantee a term of the agreement."^^xsd:string ;
-	rdfs:domain :GuaranteeTerm ;
+	rdfs:domain :AgreementTerm ;
 	rdfs:label "has obliged entity involvement"^^xsd:string ;
 	rdfs:range usdl-core:EntityInvolvement .
 
@@ -124,7 +138,7 @@
 	rdf:type owl:ObjectProperty ;
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
 	rdfs:comment "States the precondition that has to be met to guarantee the agreement term. Preconditions are defined on service properties, therefore an Agreement Condition instance is used to represent them."^^xsd:string ;
-	rdfs:domain :GuaranteeTerm ;
+	rdfs:domain :AgreementTerm ;
 	rdfs:range :AgreementCondition .
 
 :hasValue
