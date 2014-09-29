@@ -21,7 +21,8 @@
 @prefix time: 		<http://www.w3.org/2006/time#> .
 @prefix usdl-core: <http://www.linked-usdl.org/ns/usdl-core#> .
 @prefix spin:    	<http://spinrdf.org/spin#> .
-
+@prefix vcard:   <http://purl.org/vcard#> .
+@prefix foaf:    <http://xmlns.com/foaf/0.1/> .
 
 <http://www.linked-usdl.org/ns/usdl-agreement>
 	rdf:type owl:Ontology ;
