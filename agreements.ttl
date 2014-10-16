@@ -22,7 +22,6 @@
 @prefix usdl-core: <http://www.linked-usdl.org/ns/usdl-core#> .
 @prefix spin:    	<http://spinrdf.org/spin#> .
 
-
 <http://www.linked-usdl.org/ns/usdl-agreement>
 	rdf:type owl:Ontology ;
 	spin:imports <http://topbraid.org/spin/rdfsplus> ;
