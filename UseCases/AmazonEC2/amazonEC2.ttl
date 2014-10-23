@@ -3,7 +3,7 @@
 # imports: http://qudt.org/spin/unitconversion
 
 @prefix :        <http://purl.org/cloudComputing/amazonEC2#> .
-@prefix ag:      <http://purl.org/agreements#> .
+@prefix usdl-agreement:      <http://www.linked-usdl.org/ns/usdl-agreement#> .
 @prefix cloud:   <http://purl.org/cloudServices#> .
 @prefix gr:      <http://purl.org/goodrelations/v1#> .
 @prefix metrics:  <http://purl.org/metrics#> .
@@ -38,6 +38,11 @@
       rdf:type usdl-core:EntityInvolvement ;
 	  usdl-core:ofBusinessEntity :entity_Amazon ;
 	  usdl-core:withBusinessRole usdl-br:provider .
+	  
+:involvement_customer
+      rdf:type usdl-core:EntityInvolvement ;
+	  # no business entity as it will not be fixed until service provision
+	  usdl-core:withBusinessRole usdl-br:customer .	
 	  
 # Specific unit used by Amazon
 :EC2ComputeUnit
@@ -475,80 +480,84 @@
       rdf:type owl:ObjectProperty ;
       rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty .
 
-:annualUptimeMetric
-      rdf:type metrics:Metric ;
-      metrics:hasExpression
-              "100 - (100 * (?regionUnavailable % 5) / 105120)"^^xsd:string ;
+:monthlyUptimePercentage
+      rdf:type owl:ObjectProperty ;
+      usdl-agreement:hasMetric :monthlyUptimeMetric .
+      rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty .
+
+:monthlyUptimeMetric
+      rdf:type usdl-agreement:Metric ;
+	  usdl-agreement:hasMetricProviderInvolvement :involvement_customer ;
+      usdl-agreement:hasExpression
+              "100 - (100 * ?regionUnavailableMinutesInMonth / 43200)"^^xsd:string ;
       qudt:unit <http://qudt.org/vocab/unit#Percent> .
 
-:annualUptimePercentage
-      rdf:type rdf:Property ;
-      ag:hasMetric :annualUptimeMetric .
-      rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty 
-	  
 # Sample service offering including SLA
 :amazonEC2ServiceOfferingM1LargeInstanceType
       rdf:type usdl-core:ServiceOffering ;
-      ag:compliesWith :ec2ServiceCommitment ;
+      usdl-agreement:hasAgreementTerm :ec2ServiceCommitment ;
       usdl-core:includes :ec2M1LargeInstanceType .
 			  
 :ec2ServiceCommitment
-      rdf:type ag:Guarantee ;
-	  ag:guaranteedOver :ec2M1LargeInstanceType ;
-	  ag:hasObligedEntityInvolvement :involvement_Amazon ;
-      ag:guarantees
-              [ rdf:type ag:MinGuaranteedValue ;
-                ag:hasValue
+      rdf:type usdl-agreement:Guarantee ;
+	  usdl-agreement:guaranteedOver :ec2M1LargeInstanceType ;
+	  usdl-agreement:hasObligedEntityInvolvement :involvement_Amazon ;
+      usdl-agreement:guarantees
+              [ rdf:type usdl-agreement:MinGuaranteedValue ;
+			    usdl-agreement:hasConditionEvaluatorInvolvement :involvement_customer ;
+                usdl-agreement:hasValue
                         [ rdf:type gr:QuantitativeValueFloat ;
                           gr:hasValueFloat "99.95"^^xsd:float
                         ] ;
-                ag:refersTo :annualUptimePercentage ;
+                usdl-agreement:refersTo :monthlyUptimePercentage ;
                 qudt:unit <http://qudt.org/vocab/unit#Percent>
               ] ;
-      ag:hasCompensation :ec2ServiceCredit10 , :ec2ServiceCredit30 .
+      usdl-agreement:hasCompensation :ec2ServiceCredit10 , :ec2ServiceCredit30 .
 
 # Compensations
 :ec2ServiceCredit10
-      rdf:type ag:Compensation ;
-	  ag:hasObligedEntityInvolvement :involvement_Amazon ;
-      ag:guarantees
-               [ rdf:type ag:GuaranteedValue ;
-                 ag:hasValue
+      rdf:type usdl-agreement:Compensation ;
+	  usdl-agreement:hasObligedEntityInvolvement :involvement_Amazon ;
+      usdl-agreement:guarantees
+               [ rdf:type usdl-agreement:GuaranteedValue ;
+                 usdl-agreement:hasValue
                          [ rdf:type gr:QuantitativeValueFloat ;
                            gr:hasValueFloat "10"^^xsd:float
                          ] ;
-                 ag:refersTo :ServiceCreditPercentage ;
+                 usdl-agreement:refersTo :ServiceCreditPercentage ;
                 qudt:unit <http://qudt.org/vocab/unit#Percent>
               ] ;
-      ag:hasPrecondition
-              [ rdf:type ag:MinGuaranteedValue ;
-                ag:hasValue
+      usdl-agreement:hasPrecondition
+              [ rdf:type usdl-agreement:MinGuaranteedValue ;
+			    usdl-agreement:hasConditionEvaluatorInvolvement :involvement_customer ;
+                usdl-agreement:hasValue
                         [ rdf:type gr:QuantitativeValueFloat ;
                           gr:hasValueFloat "99"^^xsd:float
                         ] ;
-                ag:refersTo :annualUptimePercentage ;
+                usdl-agreement:refersTo :monthlyUptimePercentage ;
                 qudt:unit <http://qudt.org/vocab/unit#Percent>
               ] .
 
 :ec2ServiceCredit30
-      rdf:type ag:Compensation ;
-	  ag:hasObligedEntityInvolvement :involvement_Amazon ;
-      ag:guarantees
-               [ rdf:type ag:GuaranteedValue ;
-                 ag:hasValue
+      rdf:type usdl-agreement:Compensation ;
+	  usdl-agreement:hasObligedEntityInvolvement :involvement_Amazon ;
+      usdl-agreement:guarantees
+               [ rdf:type usdl-agreement:GuaranteedValue ;
+                 usdl-agreement:hasValue
                          [ rdf:type gr:QuantitativeValueFloat ;
                            gr:hasValueFloat "30"^^xsd:float
                          ] ;
-                 ag:refersTo :ServiceCreditPercentage ;
+                 usdl-agreement:refersTo :ServiceCreditPercentage ;
                 qudt:unit <http://qudt.org/vocab/unit#Percent>
               ] ;
-      ag:hasPrecondition
-              [ rdf:type ag:MaxGuaranteedValue ;
-                ag:hasValue
+      usdl-agreement:hasPrecondition
+              [ rdf:type usdl-agreement:MaxGuaranteedValue ;
+			    usdl-agreement:hasConditionEvaluatorInvolvement :involvement_customer ;
+                usdl-agreement:hasValue
                         [ rdf:type gr:QuantitativeValueFloat ;
                           gr:hasValueFloat "99"^^xsd:float
                         ] ;
-                ag:refersTo :annualUptimePercentage ;
+                usdl-agreement:refersTo :monthlyUptimePercentage ;
                 qudt:unit <http://qudt.org/vocab/unit#Percent>
               ] .
  

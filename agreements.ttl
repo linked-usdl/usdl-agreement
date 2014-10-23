@@ -1,8 +1,5 @@
-# baseURI: http://purl.org/agreements
+# baseURI: http://www.linked-usdl.org/ns/usdl-agreement#
 # imports: http://purl.org/goodrelations/v1
-# imports: http://purl.org/metrics
-# imports: http://qudt.org/schema/qudt
-# imports: http://qudt.org/vocab/unit
 # imports: http://www.linked-usdl.org/ns/usdl-business-roles#
 # imports: http://www.linked-usdl.org/ns/usdl-core
 # imports: http://www.w3.org/2004/02/skos/core
@@ -24,17 +21,17 @@
 
 <http://www.linked-usdl.org/ns/usdl-agreement>
 	rdf:type owl:Ontology ;
-	spin:imports <http://topbraid.org/spin/rdfsplus> ;
-	owl:imports <http://qudt.org/schema/qudt> , <http://qudt.org/vocab/unit> , time: , <http://www.w3.org/2004/02/skos/core> , <http://www.linked-usdl.org/ns/usdl-core> , <http://purl.org/goodrelations/v1> , <http://www.linked-usdl.org/ns/usdl-business-roles#> ;
+#	spin:imports <http://topbraid.org/spin/rdfsplus> ;
+#	owl:imports <http://qudt.org/schema/qudt> , <http://qudt.org/vocab/unit> , time: , <http://www.w3.org/2004/02/skos/core> , <http://www.linked-usdl.org/ns/usdl-core> , <http://purl.org/goodrelations/v1> , <http://www.linked-usdl.org/ns/usdl-business-roles#> ;
 	rdfs:label "Linked USDL Agreement"@en ;
 	dcterms:title "Linked USDL Agreement"@en ;
 	dcterms:description """<p>This vocabulary is a Linked USDL module that provides support for modeling service agreements. 
 	This module is informed by WS-Agreement and largely seeks to be backwards compatible with previous tooling on WS-Agreement. </p>"""@en ;
 	dcterms:created "2014-03-06"^^xsd:date ;
-	dcterms:modified "2014-04-01"^^xsd:date;
+	dcterms:modified "2014-04-01"^^xsd:date, "2014-10-22"^^xsd:date;
 	vann:preferredNamespaceUri "http://www.linked-usdl.org/ns/usdl-agreement#";
 	vann:preferredNamespacePrefix "usdl-agreement";
-	owl:versionInfo "0.1"^^xsd:string .
+	owl:versionInfo "0.5"^^xsd:string .
 
 # Main classes
 
@@ -57,6 +54,19 @@
 	rdfs:comment "A Compensation is a specialization of an agreement term that represents an alternative term that will be guaranteed in case that the original guarantee term (associated with the compensation via hasCompensation property) is not fulfilled."^^xsd:string ;
 	rdfs:label "Compensation"^^xsd:string ;
 	rdfs:subClassOf :AgreementTerm .
+	
+:ServiceProperty
+	rdf:type rdfs:Class, owl:Class ;
+	owl:unionOf (
+		[ rdf:type owl:Restriction ;
+			owl:hasValue gr:qualitativeProductOrServiceProperty ;
+			owl:onProperty rdfs:subPropertyOf
+		] 
+		[ rdf:type owl:Restriction ;
+			owl:hasValue gr:quantitativeProductOrServiceProperty ;
+			owl:onProperty rdfs:subPropertyOf
+		]
+	) .
 
 # Agreement Conditions class hierarchy
 
@@ -92,12 +102,12 @@
 
 # Properties
 
-:compliesWith
+:hasAgreementTerm
 	rdf:type owl:ObjectProperty ;
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
 	rdfs:comment "Refers to the Agreement Term that defines the corresponding agreement for a particular service offering"^^xsd:string ;
 	rdfs:domain usdl-core:ServiceOffering ;
-	rdfs:label "complies with"^^xsd:string ;
+	rdfs:label "has agreement term"^^xsd:string ;
 	rdfs:range :AgreementTerm .
 
 :guaranteedOver
@@ -140,22 +150,22 @@
 	rdfs:label "has obliged entity involvement"^^xsd:string ;
 	rdfs:range usdl-core:EntityInvolvement .
 
-:hasConditionEvaluationEntityInvolvement
+:hasConditionEvaluatorInvolvement
 	rdf:type owl:ObjectProperty ;
 	rdfs:subPropertyOf usdl-core:hasEntityInvolvement ;
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
 	rdfs:comment "Captures which involved entity (possibly unidentified business entity with a role) is responsible for evaluating conditions."^^xsd:string ;
 	rdfs:domain :AgreementCondition ;
-	rdfs:label "has condition evaluation entity involvement"^^xsd:string ;
+	rdfs:label "has condition evaluator involvement"^^xsd:string ;
 	rdfs:range usdl-core:EntityInvolvement .
 
-:hasMetricProviderEntityInvolvement
+:hasMetricProviderInvolvement
 	rdf:type owl:ObjectProperty ;
 	rdfs:subPropertyOf usdl-core:hasEntityInvolvement ;
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
 	rdfs:comment "Captures which involved entity (possibly unidentified business entity with a role) is responsible for producing metrics measurements."^^xsd:string ;
 	rdfs:domain :Metric ;
-	rdfs:label "has metric provider entity involvement"^^xsd:string ;
+	rdfs:label "has metric provider involvement"^^xsd:string ;
 	rdfs:range usdl-core:EntityInvolvement .
 
 :hasValidityInterval
@@ -163,27 +173,24 @@
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
 	rdfs:label "has validity interval"^^xsd:string ;
 	rdfs:comment "Captures the validity interval of an agreement term."^^xsd:string ;
-	rdfs:domain :AgreementTerm;
-	rdfs:range time:Interval ;
-	rdfs:subPropertyOf usdl-core:spansInterval . # Not sure about this part.
+	rdfs:domain :AgreementTerm ;
+	rdfs:range time:Interval .
 
 :hasEvaluationInterval
 	rdf:type owl:ObjectProperty ;
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
 	rdfs:label "has evaluation interval"^^xsd:string ;
 	rdfs:comment "Captures the evaluation interval of an agreement condition."^^xsd:string ;
-	rdfs:domain :AgreementCondition;
-	rdfs:range time:Interval ;
-	rdfs:subPropertyOf usdl-core:spansInterval . # Not sure about this part.
+	rdfs:domain :AgreementCondition ;
+	rdfs:range time:Interval .
 
 :hasMeasuringInterval
 	rdf:type owl:ObjectProperty ;
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
 	rdfs:label "has measuring interval"^^xsd:string ;
 	rdfs:comment "Captures the measuring frequency of a metric."^^xsd:string ;
-	rdfs:domain :Metric;
-	rdfs:range time:Interval ;
-	rdfs:subPropertyOf usdl-core:spansInterval . # Not sure about this part.
+	rdfs:domain :Metric ;
+	rdfs:range time:Interval .
 
 :hasValue
 	rdf:type owl:ObjectProperty ;
@@ -202,19 +209,7 @@
 	rdfs:comment "Captures the service property which the agreement condition is referring to. This property can be either a qualitative property or a quantitative one, as they are defined in GoodRelations"^^xsd:string ;
 	rdfs:domain :AgreementCondition ;
 	rdfs:label "refers to"^^xsd:string ;
-	rdfs:range
-		[ rdf:type owl:Class ;
-			owl:unionOf (
-				[ rdf:type owl:Restriction ;
-					owl:hasValue gr:qualitativeProductOrServiceProperty ;
-					owl:onProperty rdfs:subPropertyOf
-				] 
-				[ rdf:type owl:Restriction ;
-					owl:hasValue gr:quantitativeProductOrServiceProperty ;
-					owl:onProperty rdfs:subPropertyOf
-				]
-			)
-		] .
+	rdfs:range :ServiceProperty.
 
 :Metric
 	rdf:type owl:Class ;
@@ -233,4 +228,6 @@
 :hasMetric
 	rdf:type owl:ObjectProperty ;
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
-	rdfs:label "has metric"^^xsd:string .
+	rdfs:label "has metric"^^xsd:string ;
+	rdfs:domain :ServiceProperty ;
+	rdfs:range :Metric .
