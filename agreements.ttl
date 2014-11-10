@@ -26,7 +26,7 @@
 	rdfs:label "Linked USDL Agreement"@en ;
 	dcterms:title "Linked USDL Agreement"@en ;
 	dcterms:description """<p>This vocabulary is a Linked USDL module that provides support for modeling service agreements. 
-	This module is informed by WS-Agreement and largely seeks to be backwards compatible with previous tooling on WS-Agreement. </p>"""@en ;
+	This module is informed by WS-Agreement and largely seeks to be backwards compatible with previous tooling on WS-Agreement.</p>"""@en ;
 	dcterms:created "2014-03-06"^^xsd:date ;
 	dcterms:modified "2014-04-01"^^xsd:date, "2014-10-22"^^xsd:date;
 	vann:preferredNamespaceUri "http://www.linked-usdl.org/ns/usdl-agreement#";
@@ -38,8 +38,8 @@
 :AgreementTerm
 	rdf:type rdfs:Class , owl:Class ;
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
-	rdfs:comment "An Agreement Term represents a single term of a service level agreement"^^xsd:string ;
-	rdfs:label "Agreement Term"^^xsd:string .
+	rdfs:comment "An Agreement term represents a single term of a service level agreement."^^xsd:string ;
+	rdfs:label "Agreement term"^^xsd:string .
 	
 :Guarantee
 	rdf:type rdfs:Class , owl:Class ;
@@ -57,6 +57,9 @@
 	
 :ServiceProperty
 	rdf:type rdfs:Class, owl:Class ;
+	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
+	rdfs:comment "A Service property is a convenience class that represents the class of qualitative or quantitative properties that a service may specify. This class is defined over an specialization of GoodRelations qualitative and quantitative service properties."^^xsd:string ;
+	rdfs:label "Service property"^^xsd:string ;
 	owl:unionOf (
 		[ rdf:type owl:Restriction ;
 			owl:hasValue gr:qualitativeProductOrServiceProperty ;
@@ -73,30 +76,34 @@
 :AgreementCondition
 	rdf:type rdfs:Class , owl:Class ;
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
-	rdfs:comment "An Agreement Condition represent a constraint about a service property that can be checked within the terms of a service level agreement"^^xsd:string ;
+	rdfs:comment "An Agreement condition represent a constraint about a service property that can be checked within the terms of a service level agreement."^^xsd:string ;
 	rdfs:label "Agreement condition"^^xsd:string .
 
 :GuaranteedValue
 	rdf:type rdfs:Class ;
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
+	rdfs:comment "A Guaranteed value is an Agreement condition that specifies the concrete, unique value that the service property has to provide."^^xsd:string ;
 	rdfs:label "Guaranteed value"^^xsd:string ;
 	rdfs:subClassOf :AgreementCondition .
 
 :BetweenGuaranteedValue
 	rdf:type rdfs:Class ;
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
+	rdfs:comment "A Between guaranteed value is an Agreement condition that specifies the value interval that the service property has to provide."^^xsd:string ;
 	rdfs:label "Between guaranteed value"^^xsd:string ;
 	rdfs:subClassOf :AgreementCondition .
 
 :MaxGuaranteedValue
 	rdf:type rdfs:Class ;
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
+	rdfs:comment "A Max guaranteed value is an Agreement condition that specifies the maximum value that the service property has to provide."^^xsd:string ;
 	rdfs:label "Max guaranteed value"^^xsd:string ;
 	rdfs:subClassOf :AgreementCondition .
 
 :MinGuaranteedValue
 	rdf:type rdfs:Class ;
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
+	rdfs:comment "A Min guaranteed value is an Agreement condition that specifies the minimum value that the service property has to provide."^^xsd:string ;
 	rdfs:label "Min guaranteed value"^^xsd:string ;
 	rdfs:subClassOf :AgreementCondition .
 
@@ -105,7 +112,7 @@
 :hasAgreementTerm
 	rdf:type owl:ObjectProperty ;
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
-	rdfs:comment "Refers to the Agreement Term that defines the corresponding agreement for a particular service offering"^^xsd:string ;
+	rdfs:comment "Refers to the Agreement Term that defines the corresponding agreement for a particular service offering."^^xsd:string ;
 	rdfs:domain usdl-core:ServiceOffering ;
 	rdfs:label "has agreement term"^^xsd:string ;
 	rdfs:range :AgreementTerm .
@@ -113,7 +120,7 @@
 :guaranteedOver
 	rdf:type owl:ObjectProperty ;
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
-	rdfs:comment "Captures the concrete service over a certain term is guaranteed"^^xsd:string ;
+	rdfs:comment "Captures the concrete service over a certain term is guaranteed."^^xsd:string ;
 	rdfs:domain :AgreementTerm ;
 	rdfs:label "guaranteed over"^^xsd:string ;
 	rdfs:range usdl-core:Service .
@@ -121,7 +128,7 @@
 :guarantees
 	rdf:type owl:ObjectProperty ;
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
-	rdfs:comment "Defines the condition that is guaranteed to be fulfilled by an agreement term of a service level agreement"^^xsd:string ;
+	rdfs:comment "Defines the condition that is guaranteed to be fulfilled by an agreement term of a service level agreement."^^xsd:string ;
 	rdfs:domain :AgreementTerm ;
 	rdfs:label "guarantees"^^xsd:string ;
 	rdfs:range :AgreementCondition .
@@ -206,11 +213,13 @@
 :refersTo
 	rdf:type owl:ObjectProperty ;
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
-	rdfs:comment "Captures the service property which the agreement condition is referring to. This property can be either a qualitative property or a quantitative one, as they are defined in GoodRelations"^^xsd:string ;
+	rdfs:comment "Captures the service property which the agreement condition is referring to. This property can be either a qualitative property or a quantitative one, as they are defined in GoodRelations."^^xsd:string ;
 	rdfs:domain :AgreementCondition ;
 	rdfs:label "refers to"^^xsd:string ;
 	rdfs:range :ServiceProperty.
 
+# Metric definition facilities
+	
 :Metric
 	rdf:type owl:Class ;
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
@@ -221,6 +230,7 @@
 :hasExpression
 	rdf:type owl:ObjectProperty ;
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
+	rdfs:comment "Captures the expression that defines a metric computation. There is no restriction on how to define expressions, so they can simply be defined using strings or external vocabularies."^^xsd:string ;
 	rdfs:domain :Metric ;
 	rdfs:label "has expression"^^xsd:string ;
 	rdfs:range rdfs:Resource .
@@ -228,6 +238,7 @@
 :hasMetric
 	rdf:type owl:ObjectProperty ;
 	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-agreement>;
+	rdfs:comment "Enables the association of a Service property with a corresponding Metric that describes how to measure that property."^^xsd:string ;
 	rdfs:label "has metric"^^xsd:string ;
 	rdfs:domain :ServiceProperty ;
 	rdfs:range :Metric .
