@@ -1,0 +1,38 @@
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix usdl-core: <http://www.linked-usdl.org/ns/usdl-core#> .
+@prefix usdl-agreement: <http://www.linked-usdl.org/ns/usdl-agreement#> .
+
+
+@base <http://www.linked-usdl.org/ns/usdl-liability-roles#> .
+
+<http://www.linked-usdl.org/ns/usdl-liability-roles> a skos:ConceptScheme , owl:Ontology;
+    dcterms:title "Linked USDL Basic Liability Roles concept scheme";
+    dcterms:description """<p>This vocabulary provides the core liability roles contemplated within Linked USDL. The taxonomy provided here is a minimal reference one. Extensions or replacements for this could be defined an used within applications in the very same way by refining LiabilityRole or creating further SKOS concept schemes. </p>"""@en ;
+    dcterms:created "2014-11-13"^^xsd:date ;
+    vann:preferredNamespaceUri "http://www.linked-usdl.org/ns/usdl-liability-roles#";
+    vann:preferredNamespacePrefix "usdl-lr";
+	skos:prefLabel "Liability Roles"@en ;
+	skos:hasTopConcept <guarantor>, <beneficiary> .
+
+# Agreement basic liability roles
+
+<guarantor> a usdl-agreement:LiabilityRole ;
+    rdfs:label "Guarantor"@en ;
+    skos:prefLabel "Guarantor"@en ;
+    skos:definition "<p>A Guarantor is the entity responsible for fulfilling an agreement term of a service, i.e. it guarantees the conditions of the term.</p>"@en ;
+	skos:topConceptOf <http://www.linked-usdl.org/ns/usdl-liability-roles>;
+	skos:inScheme <http://www.linked-usdl.org/ns/usdl-liability-roles>.
+
+<beneficiary> a usdl-agreement:LiabilityRole ;
+    rdfs:label "Beneficiary"@en ;
+    skos:prefLabel "Beneficiary"@en ;
+    skos:definition "<p>A Beneficiary is the entity that receives the benefit stated in an agreement term. Specifically in the case of compensation terms, it is the entity entitled to receive the stated compensations.</p>"@en ;
+	skos:topConceptOf <http://www.linked-usdl.org/ns/usdl-liability-roles>;
+	skos:inScheme <http://www.linked-usdl.org/ns/usdl-liability-roles> .
