@@ -1,13 +1,4 @@
-# baseURI: http://purl.org/cloudServices
-# imports: http://purl.org/agreements
-# imports: http://purl.org/goodrelations/v1
-# imports: http://qudt.org/schema/qudt
-# imports: http://qudt.org/vocab/unit
-# imports: http://www.linked-usdl.org/ns/usdl-core
-# imports: http://www.w3.org/2004/02/skos/core
-
-@prefix :        <http://purl.org/cloudServices#> .
-@prefix ag:      <http://purl.org/agreements#> .
+@prefix :        <http://example.org/cloudServices#> .
 @prefix gr:      <http://purl.org/goodrelations/v1#> .
 @prefix owl:     <http://www.w3.org/2002/07/owl#> .
 @prefix qudt:    <http://qudt.org/schema/qudt#> .
@@ -15,22 +6,52 @@
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
 @prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix usdl-core: <http://www.linked-usdl.org/ns/usdl-core#> .
 
-<http://purl.org/cloudServices>
-      rdf:type owl:Ontology ;
-      owl:imports <http://www.linked-usdl.org/ns/usdl-core> , <http://www.w3.org/2004/02/skos/core> , <http://qudt.org/schema/qudt> , <http://qudt.org/vocab/unit> , <http://purl.org/goodrelations/v1> , <http://purl.org/agreements> ;
-      owl:versionInfo "Created with TopBraid Composer"^^xsd:string .
+<http://example.org/cloudServices>
+	rdf:type owl:Ontology ;
+	rdfs:label "Cloud Services ontology"@en ;
+	dcterms:title "Example Cloud Services ontology"@en ;
+	dcterms:description "This vocabulary has been created as part of the use case validation of Linked USDL Agreement module. It contains classes, properties, and instances used for the definition of cloud computing services."@en ;
+	dcterms:created "2014-03-06"^^xsd:date ;
+	dcterms:modified "2014-11-14"^^xsd:date;
+    owl:versionInfo "1.0" .
 
+# Hierarchy of cloud services
+	
 :CloudService
       rdf:type owl:Class ;
       rdfs:label "Cloud service"^^xsd:string ;
-      rdfs:subClassOf <http://www.linked-usdl.org/ns/usdl-core#Service> .
+      rdfs:subClassOf usdl-core:Service .
+
+:IaaSCloudService
+      rdf:type owl:Class ;
+      rdfs:label "Iaa SCloud service"^^xsd:string ;
+      rdfs:subClassOf :CloudService .
 
 :ComputationService
       rdf:type owl:Class ;
       rdfs:label "Computation service"^^xsd:string ;
       rdfs:subClassOf :IaaSCloudService .
 
+:StorageService
+      rdf:type owl:Class ;
+      rdfs:label "Storage service"^^xsd:string ;
+      rdfs:subClassOf :IaaSCloudService .
+
+:PaaSCloudService
+      rdf:type owl:Class ;
+      rdfs:label "Paa SCloud service"^^xsd:string ;
+      rdfs:subClassOf :CloudService .
+
+:SaaSCloudService
+      rdf:type owl:Class ;
+      rdfs:label "Saa SCloud service"^^xsd:string ;
+      rdfs:subClassOf :CloudService .
+
+# Useful units
+	  
 :Gibibyte
       rdf:type qudt:DerivedUnit , qudt:InformationEntropyUnit ;
       rdfs:label "Gibibyte"^^xsd:string ;
@@ -54,27 +75,6 @@
       qudt:symbol "GB"^^xsd:string ;
       skos:exactMatch <http://dbpedia.org/resource/Gigabyte> .
 
-:HighIOPerformance
-      rdf:type :IOPerformanceValue ;
-      rdfs:label "High IOPerformance"^^xsd:string ;
-      gr:greater :ModerateIOPerformance ;
-      gr:lesser :VeryHighIOPerformance .
-
-:IOPerformanceValue
-      rdf:type owl:Class ;
-      rdfs:label "IOPerformance value"^^xsd:string ;
-      rdfs:subClassOf gr:QualitativeValue .
-
-:IaaSCloudService
-      rdf:type owl:Class ;
-      rdfs:label "Iaa SCloud service"^^xsd:string ;
-      rdfs:subClassOf :CloudService .
-
-:LowIOPerformance
-      rdf:type :IOPerformanceValue ;
-      rdfs:label "Low IOPerformance"^^xsd:string ;
-      gr:lesser :ModerateIOPerformance .
-
 :Mebibyte
       rdf:type qudt:DerivedUnit , qudt:InformationEntropyUnit ;
       rdfs:label "Mebibyte"^^xsd:string ;
@@ -86,27 +86,6 @@
       qudt:description "The mebibyte is a multiple of the unit byte for digital information"^^xsd:string ;
       qudt:symbol "MiB"^^xsd:string ;
       skos:exactMatch <http://dbpedia.org/resource/Mebibyte> .
-
-:ModerateIOPerformance
-      rdf:type :IOPerformanceValue ;
-      rdfs:label "Moderate IOPerformance"^^xsd:string ;
-      gr:greater :LowIOPerformance ;
-      gr:lesser :HighIOPerformance .
-
-:PaaSCloudService
-      rdf:type owl:Class ;
-      rdfs:label "Paa SCloud service"^^xsd:string ;
-      rdfs:subClassOf :CloudService .
-
-:SaaSCloudService
-      rdf:type owl:Class ;
-      rdfs:label "Saa SCloud service"^^xsd:string ;
-      rdfs:subClassOf :CloudService .
-
-:StorageService
-      rdf:type owl:Class ;
-      rdfs:label "Storage service"^^xsd:string ;
-      rdfs:subClassOf :IaaSCloudService .
 
 :Tebibyte
       rdf:type qudt:InformationEntropyUnit , qudt:DerivedUnit ;
@@ -120,23 +99,49 @@
       qudt:symbol "TiB"^^xsd:string ;
       skos:exactMatch <http://dbpedia.org/resource/Tebibyte> .
 
+# Cloud service properties
+
+:hasComputingPerformance a rdf:Property;
+      rdfs:domain :ComputationService ;
+      rdfs:label "has computing performance"^^xsd:string ;
+      rdfs:range gr:QuantitativeValue ;
+      rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty .
+
+:hasIOPerformance a rdf:Property;
+    rdfs:domain [
+		rdf:type owl:Class ;
+        owl:unionOf (:ComputationService :StorageService)
+    ] ;
+	rdfs:range :IOPerformanceValue ;
+	rdfs:subPropertyOf gr:qualitativeProductOrServiceProperty ;
+    rdfs:label "has IO performance"^^xsd:string .
+
+:IOPerformanceValue
+      rdf:type owl:Class ;
+      rdfs:label "IOPerformance value"^^xsd:string ;
+      rdfs:subClassOf gr:QualitativeValue .
+	  
 :VeryHighIOPerformance
       rdf:type :IOPerformanceValue ;
       rdfs:label "Very high IOPerformance"^^xsd:string ;
       gr:greater :HighIOPerformance .
 
-:hasComputingPerformance a rdf:Property;
-      rdfs:domain :ComputationService ;
-      rdfs:label "has memory"^^xsd:string ;
-      rdfs:range gr:QuantitativeValue ;
-      rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty .
+:HighIOPerformance
+      rdf:type :IOPerformanceValue ;
+      rdfs:label "High IOPerformance"^^xsd:string ;
+      gr:greater :ModerateIOPerformance ;
+      gr:lesser :VeryHighIOPerformance .
 
-:hasIOPerformance a rdf:Property;
-      rdfs:domain
-              [ rdf:type owl:Class ;
-                owl:unionOf (:ComputationService :StorageService)
-              ] ;
-      rdfs:label "has IOPerformance"^^xsd:string .
+:LowIOPerformance
+      rdf:type :IOPerformanceValue ;
+      rdfs:label "Low IOPerformance"^^xsd:string ;
+      gr:lesser :ModerateIOPerformance .
+
+:ModerateIOPerformance
+      rdf:type :IOPerformanceValue ;
+      rdfs:label "Moderate IOPerformance"^^xsd:string ;
+      gr:greater :LowIOPerformance ;
+      gr:lesser :HighIOPerformance .
 
 :hasInternalStorage a rdf:Property;
       rdfs:domain :ComputationService ;
