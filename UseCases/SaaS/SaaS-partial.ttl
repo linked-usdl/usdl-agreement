@@ -1,0 +1,122 @@
+@prefix :        <http://example.org/cloudComputing/amazonEC2#> .
+@prefix cloud:   <http://example.org/cloudServices#> .
+@prefix dcterms:  <http://purl.org/dc/terms/> .
+@prefix foaf:    <http://xmlns.com/foaf/0.1/> .
+@prefix gr:      <http://purl.org/goodrelations/v1#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix qudt:    <http://qudt.org/schema/qudt#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix spin:    <http://spinrdf.org/spin#> .
+@prefix time:    <http://www.w3.org/2006/time#> .
+@prefix usdl-agreement:  <http://www.linked-usdl.org/ns/usdl-agreement#> .
+@prefix usdl-br:  <http://www.linked-usdl.org/ns/usdl-business-roles#> .
+@prefix usdl-core:  <http://www.linked-usdl.org/ns/usdl-core#> .
+@prefix usdl-lr:  <http://www.linked-usdl.org/ns/usdl-liability-roles#> .
+@prefix vcard:   <http://www.w3.org/2006/vcard/ns#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+<http://example.org/saas/masterSaaS>
+      rdf:type owl:Ontology ;
+      rdfs:label "Master Software as a Service Agreement ontology"@en ;
+	  rdfs:seeAlso <http://assets-production.govstore.service.gov.uk/G5/1756/5.G5.1756.003/QD1/Master Software as a Service Agreement 2014.docx> ;
+      dcterms:created "2014-11-21"^^xsd:date ;
+      dcterms:description "This vocabulary has been created as part of the use case validation of Linked USDL Agreement module. It partially describes a SaaS agreement from a UK based company."@en ;
+      dcterms:title "Master Software as a Service Agreement ontology"@en ;
+      owl:versionInfo "1.0" .
+
+# BusinessEntity description for the provider
+	  
+:entity_FDN
+      rdf:type gr:BusinessEntity ;
+      vcard:hasAddress
+              [ rdf:type vcard:Work ;
+                vcard:country-name "U.S."@en
+              ] ;
+      foaf:name "Fidelity Data Networks Ltd" .
+
+:involvement_FDN
+      rdf:type usdl-core:EntityInvolvement ;
+      usdl-core:ofBusinessEntity :entity_FDN ;
+      usdl-core:withBusinessRole usdl-br:provider .
+
+:involvement_customer
+      rdf:type usdl-core:EntityInvolvement ;
+	  # no business entity as it will not be fixed until service provision
+      usdl-core:withBusinessRole usdl-agreement:metricProvider , usdl-agreement:conditionEvaluator , usdl-br:customer .
+
+:liability_FDN
+      rdf:type usdl-agreement:EntityLiability ;
+      usdl-core:ofBusinessEntity :entity_FDN ;
+      usdl-core:withBusinessRole usdl-br:provider ;
+      usdl-core:withLiabilityRole usdl-lr:guarantor .
+
+:liability_customer
+      rdf:type usdl-agreement:EntityLiability ;
+      usdl-core:withBusinessRole usdl-br:customer ;
+      usdl-core:withLiabilityRole usdl-lr:beneficiary .
+			  
+# Service properties relevant to the SLA
+
+:percentageUptime
+      rdf:type owl:ObjectProperty ;
+      rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty ;
+      usdl-agreement:hasMetric :percentageUptimeMetric .
+
+:percentageUptimeMetric
+      rdf:type usdl-agreement:Metric ;
+      qudt:unit <http://qudt.org/vocab/unit#Percent> ;
+      usdl-agreement:hasExpression
+              " (?actualUptime/?scheduledUptime)*100"^^xsd:string ;
+      usdl-agreement:hasMeasuringInterval :monthlyInterval .
+	  
+:actualUptime
+      rdf:type owl:ObjectProperty ;
+      rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty ;
+	  rdfs:comment "Actual Uptime shall mean the total minutes in the reporting month that the Services were available to Authorized Users for normal use."@en .
+	  
+:scheduledUptime
+      rdf:type owl:ObjectProperty ;
+      rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty ;
+	  rdfs:comment "Scheduled Uptime shall mean the total minutes in the reporting month less the total minutes represented by the Scheduled Downtime"@en .
+
+:monthlyInterval
+      rdf:type time:Interval ;
+      time:hasDurationDescription
+              [ rdf:type time:DurationDescription ;
+                time:months 1
+              ] .
+
+:performanceCredit
+      rdf:type owl:ObjectProperty ;
+      rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty .
+
+# Sample service offering including SLA
+
+:masterSaaSoffering
+      rdf:type usdl-core:ServiceOffering ;
+      usdl-agreement:hasAgreementTerm :availabilityServiceLevel ;
+      usdl-core:hasEntityInvolvement :involvement_customer , :involvement_FDN ;
+      usdl-core:includes :masterSaaSservice .
+
+:availabilityServiceLevel
+  rdf:type usdl-agreement:Guarantee ;
+  usdl-agreement:guaranteedOver :masterSaaSservice ;
+  usdl-agreement:guarantees
+    [ rdf:type usdl-agreement:MinGuaranteedValue ;
+      usdl-agreement:hasValue [ rdf:type gr:QuantitativeValueFloat ; gr:hasValueFloat "99.99"^^xsd:float ] ;
+      usdl-agreement:refersTo :percentageUptime
+    ] ;
+  usdl-agreement:hasCompensation :performanceCreditCompensation
+  usdl-agreement:hasEntityLiability :liability_customer , :liability_FDN ;
+  usdl-agreement:hasValidityInterval :monthlyInterval .
+
+:performanceCreditCompensation
+  a usdl-agreement:Compensation ;
+  usdl-agreement:hasEntityLiability :liability_customer , :liability_FDN ;
+  usdl-agreement:guarantees
+    [ rdf:type usdl-agreement:GuaranteedValue
+      usdl-agreement:hasValue [ rdf:type metrics:Metric ; metrics:hasExpression "10 * floor(99.99 - ?percentageUptime)"^^xsd:string ]
+      usdl-agreement:refersTo :performanceCredit 
+   ] .
