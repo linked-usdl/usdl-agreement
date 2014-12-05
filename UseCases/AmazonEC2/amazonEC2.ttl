@@ -39,6 +39,11 @@
       foaf:homepage <http://aws.amazon.com/> ;
       foaf:logo <http://d36cz9buwru1tt.cloudfront.net/logo_aws.gif> ;
       foaf:name "Amazon Web Services LLC" .
+	  
+:entity_Customer
+      rdf:type gr:BusinessEntity ;
+      foaf:name "EC2 Abstract Customer" .
+	
 
 :involvement_Amazon
       rdf:type usdl-core:EntityInvolvement ;
@@ -47,19 +52,20 @@
 
 :involvement_customer
       rdf:type usdl-core:EntityInvolvement ;
-	  # no business entity as it will not be fixed until service provision
+	  usdl-core:ofBusinessEntity :entity_Customer ;
       usdl-core:withBusinessRole usdl-agreement:metricProvider , usdl-agreement:conditionEvaluator , usdl-br:customer .
 
 :liability_Amazon
       rdf:type usdl-agreement:EntityLiability ;
       usdl-core:ofBusinessEntity :entity_Amazon ;
       usdl-core:withBusinessRole usdl-br:provider ;
-      usdl-core:withLiabilityRole usdl-lr:guarantor .
+      usdl-agreement:withLiabilityRole usdl-lr:guarantor .
 
 :liability_customer
       rdf:type usdl-agreement:EntityLiability ;
+      usdl-core:ofBusinessEntity :entity_Customer ;
       usdl-core:withBusinessRole usdl-br:customer ;
-      usdl-core:withLiabilityRole usdl-lr:beneficiary .
+      usdl-agreement:withLiabilityRole usdl-lr:beneficiary .
 
 # Specific unit used by Amazon
 
