@@ -20,9 +20,33 @@
 	This module is informed by WS-Agreement and largely seeks to be backwards compatible with previous tooling on WS-Agreement.</p>"""@en ;
 	dcterms:created "2014-03-06"^^xsd:date ;
 	dcterms:modified "2014-04-01"^^xsd:date, "2014-10-22"^^xsd:date, "2014-11-13"^^xsd:date;
+	dcterms:issued "2015-07-01"^^xsd:date ;
 	vann:preferredNamespaceUri "http://www.linked-usdl.org/ns/usdl-agreement#";
 	vann:preferredNamespacePrefix "usdl-agreement";
+    dcterms:creator usdl-core:cpedrinaci, usdl-core:jcardoso, :jmgarcia, :mresinas, :pfernandez, :aruiz;
 	owl:versionInfo "1.0" .
+
+# Authors information
+:jmgarcia a foaf:Person;
+    foaf:name "Jose Maria Garcia";
+    foaf:homepage <http://www.lsi.us.es/~josemgarcia/> .
+    
+:mresinas a foaf:Person;
+    foaf:name "Manuel Resinas";
+    foaf:homepage <http://www.isa.us.es/members/manuel.resinas> .    
+
+:pfernandez a foaf:Person;
+    foaf:name "Pablo Fernandez";
+    foaf:homepage <http://www.isa.us.es/members/pablo.fernandez> . 
+
+:aruiz a foaf:Person;
+    foaf:name "Antonio Ruiz Cortes";
+    foaf:homepage <http://www.isa.us.es/members/antonio.ruiz> . 
+
+usdl-core:ISA a foaf:Organization;
+    foaf:member :jmgarcia, :mresinas, :pfernandez, :aruiz;
+    foaf:name "Applied Software Engineering group, University of Seville";
+    foaf:homepage <http://www.isa.us.es> .
 
 # Main classes
 
