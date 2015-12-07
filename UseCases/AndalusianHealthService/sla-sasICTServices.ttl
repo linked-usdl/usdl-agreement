@@ -1,0 +1,417 @@
+@prefix :        <http://www.juntadeandalucia.es/servicioandaluzdesalud/ict/operational#> .
+@prefix sas-ict: <http://www.juntadeandalucia.es/servicioandaluzdesalud/ict#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix foaf:    <http://xmlns.com/foaf/0.1/> .
+@prefix gr:      <http://purl.org/goodrelations/v1#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix qudt:    <http://qudt.org/schema/qudt#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix spin:    <http://spinrdf.org/spin#> .
+@prefix time:    <http://www.w3.org/2006/time#> .
+@prefix usdl-agreement:  <http://www.linked-usdl.org/ns/usdl-agreement#> .
+@prefix usdl-br:  <http://www.linked-usdl.org/ns/usdl-business-roles#> .
+@prefix usdl-core:  <http://www.linked-usdl.org/ns/usdl-core#> .
+@prefix usdl-lr:  <http://www.linked-usdl.org/ns/usdl-liability-roles#> .
+@prefix vcard:   <http://www.w3.org/2006/vcard/ns#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+<http://www.juntadeandalucia.es/servicioandaluzdesalud/ict/operational>
+      rdf:type owl:Ontology ;
+      rdfs:label "SAS ICT operational services SLA ontology"@en ;
+      rdfs:seeAlso <http://aws.amazon.com/ec2/sla/> ;
+      dcterms:created "2015-11-15"^^xsd:date ;
+      dcterms:description "This vocabulary has been created as part of the use case validation of Linked USDL Agreement module. It describes the service level agreement of the operational services described in a call for tenders published by the Andalusian Health Service (SAS), a regional public health care institution in Spain."@en ;
+      dcterms:modified "2015-11-20"^^xsd:date, "2015-11-22"^^xsd:date ;
+      dcterms:title "SAS ICT operational services SLA ontology"@en ;
+      owl:imports <http://www.juntadeandalucia.es/servicioandaluzdesalud/ict> ;
+      owl:versionInfo "1.0" .
+
+#################################################
+# BusinessEntity description for SAS ICT services
+
+:andalusianHealthService
+      rdf:type gr:BusinessEntity ;
+      vcard:hasAddress
+              [ rdf:type vcard:Work ;
+                vcard:country-name "Spain"@en
+              ] ;
+      foaf:homepage <http://www.juntadeandalucia.es/servicioandaluzdesalud> ;
+      foaf:logo <http://www.juntadeandalucia.es/servicioandaluzdesalud/images/juntalink.png> ;
+      foaf:name "Servicio Andaluz de Salud"@es .
+
+:tender
+      rdf:type gr:BusinessEntity ;
+      foaf:name "SAS ICT maintenance service tender" .
+
+:tenderInvolvement
+      rdf:type usdl-core:EntityInvolvement ;
+      usdl-core:ofBusinessEntity :tender ;
+      usdl-core:withBusinessRole usdl-agreement:metricProvider , usdl-br:provider .
+
+:andalusianHealthServiceInvolvement
+      rdf:type usdl-core:EntityInvolvement ;
+	  usdl-core:ofBusinessEntity :andalusianHealthService ;
+      usdl-core:withBusinessRole usdl-agreement:conditionEvaluator , usdl-br:customer .
+
+:tenderLiability
+      rdf:type usdl-agreement:EntityLiability ;
+      usdl-core:ofBusinessEntity :tender ;
+      usdl-core:withBusinessRole usdl-br:provider ;
+      usdl-agreement:withLiabilityRole usdl-lr:guarantor .
+
+:andalusianHealthServiceLiability
+      rdf:type usdl-agreement:EntityLiability ;
+      usdl-core:ofBusinessEntity :andalusianHealthService ;
+      usdl-core:withBusinessRole usdl-br:customer ;
+      usdl-agreement:withLiabilityRole usdl-lr:beneficiary .
+
+:tenderLiabilityForMaximumPenaltyCosts
+      rdf:type usdl-agreement:EntityLiability ;
+      usdl-core:ofBusinessEntity :tender ;
+      usdl-core:withBusinessRole usdl-br:provider ;
+      usdl-agreement:withLiabilityRole usdl-lr:beneficiary .
+
+:andalusianHealthServiceLiabilityForMaximumPenaltyCosts
+      rdf:type usdl-agreement:EntityLiability ;
+      usdl-core:ofBusinessEntity :andalusianHealthService ;
+      usdl-core:withBusinessRole usdl-br:customer ;
+      usdl-agreement:withLiabilityRole usdl-lr:guarantor .
+
+      
+############################################
+# Individual services provided by the tender
+
+:tenderIssueResolutionService
+      rdf:type sas-ict:IssueResolutionService;
+      rdfs:label "Tender Issue Resolution Service"^^xsd:string ;
+      usdl-core:hasEntityInvolvement :tenderInvolvement .
+
+:tenderDataRequestResolutionService
+      rdf:type sas-ict:DataRequestResolutionService;
+      rdfs:label "Tender Data Request Resolution Service"^^xsd:string ;
+      usdl-core:hasEntityInvolvement :tenderInvolvement .
+
+:tenderMiscellaneousRequestsResolutionService
+      rdf:type sas-ict:MiscellaneousRequestsResolutionService;
+      rdfs:label "Tender Miscellaneous Requests Resolution Service"^^xsd:string ;
+      usdl-core:hasEntityInvolvement :tenderInvolvement .
+
+########################################			  
+# Service properties relevant to the SLA
+
+:IO_01
+      rdf:type owl:ObjectProperty ;
+      rdfs:comment "Percentage of very high priority issues resolved in time."@en ;
+      rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty ;
+      usdl-agreement:hasMetric :veryHighPriorityIssuesResolvedInTimePercentage .
+
+:veryHighPriorityIssuesResolvedInTimePercentage
+      rdf:type usdl-agreement:Metric ;
+      qudt:unit <http://qudt.org/vocab/unit#Percent> ;
+      rdfs:comment "Computation of percentage of very high priority issues resolved in time."@en ;
+      usdl-agreement:hasExpression
+              """SELECT  ?service (( ?timelyIssues / ?totalIssues ) AS ?IO_01)
+                   WHERE
+                     { ?service sas-ict:hasIssue ?issue
+                         { SELECT  ?service (COUNT(?issue) AS ?totalIssues)
+                           WHERE
+                             { ?service sas-ict:hasIssue ?issue .
+                               ?issue sas-ict:hasPriority sas-ict:VeryHighPriority
+                             }
+                           GROUP BY ?service
+                         }
+                       UNION
+                         { SELECT  ?service (COUNT(?issue) AS ?timelyIssues)
+                           WHERE
+                             { ?service sas-ict:hasIssue ?issue .
+                               ?issue sas-ict:hasPriority sas-ict:VeryHighPriority .
+                               ?issue sas-ict:hasResolutionTime ?resTime .
+                               ?resTime time:hasDurationDescription ?resDuration .
+                               ?resDuration time:hours ?resDurationInHours
+                               FILTER ( ?resDurationInHours < 2 )
+                             }
+                           GROUP BY ?service
+                         }
+                     }"""^^xsd:string ;
+      usdl-agreement:hasMeasuringInterval :billingInterval .
+
+:IO_04
+      rdf:type owl:ObjectProperty ;
+      rdfs:comment "Average resolution time of very high priority issues."@en ;
+      rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty ;
+      usdl-agreement:hasMetric :veryHighPriorityIssuesAvgResolutionTime .
+
+:veryHighPriorityIssuesAvgResolutionTime
+      rdf:type usdl-agreement:Metric ;
+      qudt:unit <http://qudt.org/vocab/unit#Hour> ;
+      rdfs:comment "Computation of average resolution time of very high priority issues."@en ;
+      usdl-agreement:hasExpression
+              """SELECT  ?service (AVG(?resDurationInHours) AS ?IO_04)
+                   WHERE
+                     { ?service sas-ict:hasIssue ?issue .
+                       ?issue sas-ict:hasPriority sas-ict:VeryHighPriority .
+                       ?issue sas-ict:hasResolutionTime ?resTime .
+                       ?resTime time:hasDurationDescription ?resDuration .
+                       ?resDuration time:hours ?resDurationInHours
+                     }
+                   GROUP BY ?service"""^^xsd:string ;
+      usdl-agreement:hasMeasuringInterval :billingInterval .
+
+:IO_05
+      rdf:type owl:ObjectProperty ;
+      rdfs:comment "Average resolution time of high priority issues."@en ;
+      rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty ;
+      usdl-agreement:hasMetric :highPriorityIssuesAvgResolutionTime .
+
+:highPriorityIssuesAvgResolutionTime
+      rdf:type usdl-agreement:Metric ;
+      qudt:unit <http://qudt.org/vocab/unit#Hour> ;
+      rdfs:comment "Computation of average resolution time of high priority issues."@en ;
+      usdl-agreement:hasExpression
+              """SELECT  ?service (AVG(?resDurationInHours) AS ?IO_05)
+                   WHERE
+                     { ?service sas-ict:hasIssue ?issue .
+                       ?issue sas-ict:hasPriority sas-ict:HighPriority .
+                       ?issue sas-ict:hasResolutionTime ?resTime .
+                       ?resTime time:hasDurationDescription ?resDuration .
+                       ?resDuration time:hours ?resDurationInHours
+                     }
+                   GROUP BY ?service"""^^xsd:string ;
+      usdl-agreement:hasMeasuringInterval :billingInterval .
+
+:billingInterval
+      rdf:type time:Interval ;
+      time:hasDurationDescription
+              [ rdf:type time:DurationDescription ;
+                time:months 1 
+              ] .
+              
+:contractInterval
+      rdf:type time:Interval ;
+      time:hasDurationDescription
+              [ rdf:type time:DurationDescription ;
+                time:years 2 
+              ] .
+
+:slaExclusionInterval
+      rdf:type time:Interval ;
+      time:intervalStartedBy :contractInterval ;
+      time:intervalBefore :slaValidityInterval ;
+      time:hasDurationDescription
+              [ rdf:type time:DurationDescription ;
+                time:weeks 8
+              ] .
+ 
+:slaValidityInterval
+      rdf:type time:Interval ;
+      time:hasDurationDescription
+              [ rdf:type time:DurationDescription ;
+                time:years 1 ;
+                time:weeks 44
+              ] .
+
+:IO_01PenaltyCost
+      rdf:type owl:ObjectProperty ;
+      rdfs:comment "Percentage with respect to monthly incurred costs to be deducted when IO_01 commitment is not enforced."@en ;
+      rdfs:subPropertyOf sas-ict:timeBoundedQuantitativeProductOrServiceProperty .
+
+:IO_02PenaltyCost
+      rdf:type owl:ObjectProperty ;
+      rdfs:comment "Percentage with respect to monthly incurred costs to be deducted when IO_02 commitment is not enforced."@en ;
+      rdfs:subPropertyOf sas-ict:timeBoundedQuantitativeProductOrServiceProperty .
+
+:IO_03PenaltyCost
+      rdf:type owl:ObjectProperty ;
+      rdfs:comment "Percentage with respect to monthly incurred costs to be deducted when IO_03 commitment is not enforced."@en ;
+      rdfs:subPropertyOf sas-ict:timeBoundedQuantitativeProductOrServiceProperty .
+
+:IO_04PenaltyCost
+      rdf:type owl:ObjectProperty ;
+      rdfs:comment "Percentage with respect to monthly incurred costs to be deducted when IO_04 commitment is not enforced."@en ;
+      rdfs:subPropertyOf sas-ict:timeBoundedQuantitativeProductOrServiceProperty .
+
+:IO_05PenaltyCost
+      rdf:type owl:ObjectProperty ;
+      rdfs:comment "Percentage with respect to monthly incurred costs to be deducted when IO_05 commitment is not enforced."@en ;
+      rdfs:subPropertyOf sas-ict:timeBoundedQuantitativeProductOrServiceProperty .
+
+:IO_06PenaltyCost
+      rdf:type owl:ObjectProperty ;
+      rdfs:comment "Percentage with respect to monthly incurred costs to be deducted when IO_06 commitment is not enforced."@en ;
+      rdfs:subPropertyOf sas-ict:timeBoundedQuantitativeProductOrServiceProperty .
+
+:IO_07PenaltyCost
+      rdf:type owl:ObjectProperty ;
+      rdfs:comment "Percentage with respect to monthly incurred costs to be deducted when IO_07 commitment is not enforced."@en ;
+      rdfs:subPropertyOf sas-ict:timeBoundedQuantitativeProductOrServiceProperty .
+
+:IO_08PenaltyCost
+      rdf:type owl:ObjectProperty ;
+      rdfs:comment "Percentage with respect to monthly incurred costs to be deducted when IO_08 commitment is not enforced."@en ;
+      rdfs:subPropertyOf sas-ict:timeBoundedQuantitativeProductOrServiceProperty .
+
+:IO_09PenaltyCost
+      rdf:type owl:ObjectProperty ;
+      rdfs:comment "Percentage with respect to monthly incurred costs to be deducted when IO_09 commitment is not enforced."@en ;
+      rdfs:subPropertyOf sas-ict:timeBoundedQuantitativeProductOrServiceProperty .
+
+:IO_10PenaltyCost
+      rdf:type owl:ObjectProperty ;
+      rdfs:comment "Percentage with respect to monthly incurred costs to be deducted when IO_10 commitment is not enforced."@en ;
+      rdfs:subPropertyOf sas-ict:timeBoundedQuantitativeProductOrServiceProperty .
+
+:IO_11PenaltyCost
+      rdf:type owl:ObjectProperty ;
+      rdfs:comment "Percentage with respect to monthly incurred costs to be deducted when IO_11 commitment is not enforced."@en ;
+      rdfs:subPropertyOf sas-ict:timeBoundedQuantitativeProductOrServiceProperty .
+
+:IO_12PenaltyCost
+      rdf:type owl:ObjectProperty ;
+      rdfs:comment "Percentage with respect to monthly incurred costs to be deducted when IO_12 commitment is not enforced."@en ;
+      rdfs:subPropertyOf sas-ict:timeBoundedQuantitativeProductOrServiceProperty .
+
+:IO_13PenaltyCost
+      rdf:type owl:ObjectProperty ;
+      rdfs:comment "Percentage with respect to monthly incurred costs to be deducted when IO_13 commitment is not enforced."@en ;
+      rdfs:subPropertyOf sas-ict:timeBoundedQuantitativeProductOrServiceProperty .
+
+:IO_14PenaltyCost
+      rdf:type owl:ObjectProperty ;
+      rdfs:comment "Percentage with respect to monthly incurred costs to be deducted when IO_14 commitment is not enforced."@en ;
+      rdfs:subPropertyOf sas-ict:timeBoundedQuantitativeProductOrServiceProperty .
+
+:IO_15PenaltyCost
+      rdf:type owl:ObjectProperty ;
+      rdfs:comment "Percentage with respect to monthly incurred costs to be deducted when IO_15 commitment is not enforced."@en ;
+      rdfs:subPropertyOf sas-ict:timeBoundedQuantitativeProductOrServiceProperty .
+
+:monthlyPenaltyCost
+      rdf:type owl:ObjectProperty ;
+      rdfs:comment "Percentage with respect to monthly incurred costs to be deducted each month."@en ;
+      rdfs:subPropertyOf sas-ict:timeBoundedQuantitativeProductOrServiceProperty ;
+      usdl-agreement:hasMetric :monthlyPenaltyCostMetric .
+
+:monthlyPenaltyCostMetric
+      rdf:type usdl-agreement:Metric ;
+      qudt:unit <http://qudt.org/vocab/unit#Percent> ;
+      rdfs:comment "Metric to compute the percentage with respect to monthly incurred costs to be deducted each month."@en ;
+      usdl-agreement:hasExpression
+              """SELECT ?service ?billingInterval (SUM(?penaltyCost) AS ?monthlyPenaltyCost)
+                   WHERE
+                     { ?service rdf:type sas-ict:OperationalServices .
+                       VALUES ?penaltyCostProperty { :IO_01PenaltyCost :IO_02PenaltyCost :IO_03PenaltyCost :IO_04PenaltyCost :IO_05PenaltyCost :IO_06PenaltyCost :IO_07PenaltyCost :IO_08PenaltyCost :IO_09PenaltyCost :IO_10PenaltyCost :IO_11PenaltyCost :IO_12PenaltyCost :IO_13PenaltyCost :IO_14PenaltyCost :IO_15PenaltyCost }
+                       ?service ?penaltyCostProperty ?penaltyCost .
+                       ?penaltyCost sas-ict:spansInterval ?billingInterval
+                     }
+                   GROUP BY ?service ?billingInterval"""^^xsd:string ;
+      usdl-agreement:hasMeasuringInterval :billingInterval .
+
+:totalPenaltyCost
+      rdf:type owl:ObjectProperty ;
+      rdfs:comment "Percentage with respect to the total incurred costs during the whole contract that has been deducted."@en ;
+      rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty ;
+      usdl-agreement:hasMetric :totalPenaltyCostMetric .
+
+:totalPenaltyCostMetric
+      rdf:type usdl-agreement:Metric ;
+      qudt:unit <http://qudt.org/vocab/unit#Percent> ;
+      rdfs:comment "Metric to compute the percentage with respect to the total incurred costs during the whole contract to be deducted."@en ;
+      usdl-agreement:hasExpression
+              """SELECT ?service (SUM(?penaltyCost * ?incurredCost) AS ?totalPenaltyCost)
+                   WHERE
+                     { ?service rdf:type sas-ict:OperationalServices .
+                       VALUES ?penaltyCostProperty { :IO_01PenaltyCost :IO_02PenaltyCost :IO_03PenaltyCost :IO_04PenaltyCost :IO_05PenaltyCost :IO_06PenaltyCost :IO_07PenaltyCost :IO_08PenaltyCost :IO_09PenaltyCost :IO_10PenaltyCost :IO_11PenaltyCost :IO_12PenaltyCost :IO_13PenaltyCost :IO_14PenaltyCost :IO_15PenaltyCost }
+                       ?service ?penaltyCostProperty ?penaltyCost .
+                       ?penaltyCost sas-ict:spansInterval ?billingInterval .
+                       ?service sas-ict:incurredCost ?incurredCost .
+                       ?incurredCost sas-ict:spansInterval ?billingInterval
+                     }
+                   GROUP BY ?service"""^^xsd:string ;
+      usdl-agreement:hasMeasuringInterval :billingInterval .
+
+#######################################
+# Sample service offering including SLA
+
+:operationalServiceOffering
+      rdf:type usdl-core:ServiceOffering ;
+      usdl-agreement:hasAgreementTerm :IO_01Commitment , :IO_04Commitment ; # tender commitments
+      usdl-agreement:hasAgreementTerm :monthlyPenaltyCostCommitment , :totalPenaltyCostCommitment ; # SAS commitments
+      usdl-core:hasEntityInvolvement :andalusianHealthServiceInvolvement , :tenderInvolvement ;
+      usdl-core:includes :tenderIssueResolutionService, :tenderDataRequestResolutionService, :tenderMiscellaneousRequestsResolutionService .
+
+:IO_04Commitment
+      rdf:type usdl-agreement:Guarantee ;
+      usdl-agreement:guaranteedOver :tenderIssueResolutionService ;
+      usdl-agreement:guarantees
+              [ rdf:type usdl-agreement:MaxGuaranteedValue ;
+                qudt:unit <http://qudt.org/vocab/unit#Hour> ;
+				usdl-agreement:hasEvaluationInterval :billingInterval ;
+                usdl-agreement:hasValue
+                        [ rdf:type gr:QuantitativeValueFloat ;
+                          gr:hasValueFloat "2"^^xsd:float
+                        ] ;
+                usdl-agreement:refersTo
+                        :IO_04
+              ] ;
+      usdl-agreement:hasCompensation
+              :IO_04Compensation ;
+      usdl-agreement:hasEntityLiability :andalusianHealthServiceLiability , :tenderLiability ;
+	  usdl-agreement:hasValidityInterval :slaValidityInterval .
+	  
+################################################################################
+# Limitations to penalty costs guaranteed by the Andalusian Health Service (SAS)
+
+:monthlyPenaltyCostCommitment
+      rdf:type usdl-agreement:Guarantee ;
+      usdl-agreement:guaranteedOver :tenderIssueResolutionService , :tenderDataRequestsResolutionService , :tenderMiscellaneousRequestsResolutionService ;
+      usdl-agreement:guarantees
+              [ rdf:type usdl-agreement:MaxGuaranteedValue ;
+                qudt:unit <http://qudt.org/vocab/unit#Percent> ;
+				usdl-agreement:hasEvaluationInterval :billingInterval ;
+                usdl-agreement:hasValue
+                        [ rdf:type gr:QuantitativeValueFloat ;
+                          gr:hasValueFloat "25"^^xsd:float
+                        ] ;
+                usdl-agreement:refersTo
+                        :monthlyPenaltyCost
+              ] ;
+      usdl-agreement:hasEntityLiability :andalusianHealthServiceLiabilityForMaximumPenaltyCosts , :tenderLiabilityForMaximumPenaltyCosts ;
+	  usdl-agreement:hasValidityInterval :contractInterval .
+
+:totalPenaltyCostCommitment
+      rdf:type usdl-agreement:Guarantee ;
+      usdl-agreement:guaranteedOver :tenderIssueResolutionService , :tenderDataRequestsResolutionService , :tenderMiscellaneousRequestsResolutionService ;
+      usdl-agreement:guarantees
+              [ rdf:type usdl-agreement:MaxGuaranteedValue ;
+                qudt:unit <http://qudt.org/vocab/unit#Percent> ;
+				usdl-agreement:hasEvaluationInterval :contractInterval ;
+                usdl-agreement:hasValue
+                        [ rdf:type usdl-agreement:Metric ;
+                          usdl-agreement:hasExpression "10% * ?totalBudget"^^xsd:string
+                        ] ;
+                usdl-agreement:refersTo
+                        :totalPenaltyCost
+              ] ;
+      usdl-agreement:hasEntityLiability :andalusianHealthServiceLiabilityForMaximumPenaltyCosts , :tenderLiabilityForMaximumPenaltyCosts ;
+	  usdl-agreement:hasValidityInterval :contractInterval .
+
+
+###############
+# Compensations
+
+:IO_04Compensation
+      rdf:type usdl-agreement:Compensation ;
+      usdl-agreement:guarantees
+              [ rdf:type usdl-agreement:GuaranteedValue ;
+                qudt:unit <http://qudt.org/vocab/unit#Percent> ;
+                usdl-agreement:hasValue
+                        [ rdf:type usdl-agreement:Metric ;
+                          usdl-agreement:hasExpression "(?IO_04 - 2) / 0,33) * 30% * 25%"^^xsd:string
+                        ] ;
+                usdl-agreement:refersTo
+                        :IO_04PenaltyCost
+              ] ;
+      usdl-agreement:hasEntityLiability
+              :andalusianHealthServiceLiability , :tenderLiability .

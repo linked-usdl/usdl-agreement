@@ -1,0 +1,155 @@
+@prefix :        <http://www.juntadeandalucia.es/servicioandaluzdesalud/ict#> .
+@prefix gr:      <http://purl.org/goodrelations/v1#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix qudt:    <http://qudt.org/schema/qudt#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix time:    <http://www.w3.org/2006/time#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix usdl-core: <http://www.linked-usdl.org/ns/usdl-core#> .
+
+<http://www.juntadeandalucia.es/servicioandaluzdesalud/ict>
+	rdf:type owl:Ontology ;
+	rdfs:label "SAS ICT maintenance services ontology"@en ;
+	dcterms:title "SAS ICT maintenance services ontology"@en ;
+	dcterms:description "This vocabulary has been created as part of the use case validation of Linked USDL Agreement module. It contains classes, properties, and instances used for the definition of ICT maintenance services included in a Call for Tenders by the Andalusian Health Service (SAS), a regional public health care institution in Spain."@en ;
+	dcterms:created "2015-11-15"^^xsd:date ;
+	dcterms:modified "2015-11-20"^^xsd:date, "2015-11-22"^^xsd:date;
+    owl:versionInfo "1.0" .
+
+# ICT Maintenance Services to be contracted
+	
+:SoftwareFactory
+      rdf:type owl:Class ;
+      rdfs:label "Software Factory service"^^xsd:string ;
+      rdfs:subClassOf usdl-core:Service .
+
+:StrategyAndContinuousImprovementServices
+      rdf:type owl:Class ;
+      rdfs:label "Strategy and Continuous Improvement services"@en, "Línea de servicios de estrategia y mejora continua"@es;
+      rdfs:subClassOf :SoftwareFactory .
+
+:DesignServices
+      rdf:type owl:Class ;
+      rdfs:label "Design services"@en, "Línea de servicios de diseño"@es ;
+      rdfs:subClassOf :SoftwareFactory .
+
+:TransitionServices
+      rdf:type owl:Class ;
+      rdfs:label "Transition services"@en, "Línea de servicios de transición"@es ;
+      rdfs:subClassOf :SoftwareFactory .
+
+:OperationalServices
+      rdf:type owl:Class ;
+      rdfs:label "Operational services"@en, "Línea de servicios de operación"@es ;
+      rdfs:subClassOf :SoftwareFactory .
+      
+:IssueResolutionService
+      rdf:type owl:Class ;
+      rdfs:label "Issue Resolution service"@en, "Servicio de resolución de incidencias"@es ;
+      rdfs:subClassOf :OperationalServices .
+
+:DataRequestResolutionService
+      rdf:type owl:Class ;
+      rdfs:label "Data Request Resolution service"@en, "Servicio de resolución de peticiones de datos"@es ;
+      rdfs:subClassOf :OperationalServices .
+
+:MiscellaneousRequestsResolutionService
+      rdf:type owl:Class ;
+      rdfs:label "Miscellaneous Request Resolution service"@en, "Servicio de resolución de otras intervenciones"@es ;
+      rdfs:subClassOf :OperationalServices .
+
+# Useful units
+	  
+:BasicServiceHour
+      rdf:type qudt:BaseUnit , qudt:RateOfReturnUnit ;
+      rdfs:label "Basic Service Hour"@en, "Hora Básica de Servicio"@es ;
+      qudt:abbreviation "HBS"@es ;
+      qudt:conversionMultiplier
+              "0.0"^^xsd:double ;
+      qudt:conversionOffset
+              "0.0"^^xsd:double ;
+      qudt:symbol "HBS"^^xsd:string .
+
+# Software Factory domain specific classes and properties
+
+:Issue
+      rdf:type owl:Class;
+      rdfs:label "Issue"@en, "Incidencia"@es .
+      
+:hasPriority
+	  rdf:type owl:ObjectProperty ;
+	  rdfs:domain :Issue ;
+	  rdfs:range :PriorityLevel .
+	  
+:PriorityLevel
+      rdf:type owl:Class ;
+      rdfs:label "Priority level"@en , "Nivel de prioridad"@es ;
+      rdfs:subClassOf gr:QualitativeValue .
+
+:VeryHighPriority
+      rdf:type :PriorityLevel ;
+      rdfs:label "Very high priority"@en , "Prioridad muy alta"@es ;
+      gr:greater :HighPriority .
+
+:HighPriority
+      rdf:type :PriorityLevel ;
+      rdfs:label "High priority"@en , "Prioridad alta"@es ;
+      gr:greater :NormalPriority ;
+      gr:lesser :VeryHighPriority .
+
+:NormalPriority
+      rdf:type :PriorityLevel ;
+      rdfs:label "Normal priority"@en , "Prioridad normal"@es ;
+      gr:greater :LowPriority ;
+      gr:lesser :NormalPriority .
+
+:LowPriority
+      rdf:type :PriorityLevel ;
+      rdfs:label "Low priority"@en , "Prioridad baja"@es ;
+      gr:lesser :NormalPriority .
+
+:hasResolutionTime
+	  rdf:type owl:ObjectProperty ;
+	  rdfs:domain :Issue ;
+	  rdfs:range time:Interval .
+
+# Software Factory services properties
+
+:totalBudget
+      rdf:type owl:ObjectProperty ;
+      rdfs:comment "Total contractual budget."@en , "Presupuesto del contrato."@es ;
+      rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty ;
+	  rdfs:domain :SoftwareFactory .
+
+:timeBoundedQuantitativeProductOrServiceProperty
+      rdf:type owl:ObjectProperty ;
+      rdfs:comment "Specialization of a gr:quantitativeProductOrServiceProperty to account for time-bounded values of properties."@en ;
+      rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty ;
+      rdfs:range :TimeBoundedQuantitativeValue.
+
+:TimeBoundedQuantitativeValue
+      rdf:type owl:Class ;
+      rdfs:comment "Specialization of a gr:QuantitativeValue to account for time-bounded values of properties."@en ;
+      rdfs:subClassOf gr:QuantitativeValue .
+
+:spansInterval
+      rdf:type owl:ObjectProperty ;
+      rdfs:comment "Property to specify the time interval to which a certain value of a time-bounded quantitative property is bounded."@en ;
+      rdfs:domain :TimeBoundedQuantitativeValue ;
+      rdfs:range time:Interval .
+
+:incurredCost
+      rdf:type owl:ObjectProperty ;
+	  rdfs:comment "Time bounded incurred cost for a service."@en ;
+	  rdfs:subPropertyOf :timeBoundedQuantitativeProductOrServiceProperty ;
+	  rdfs:domain :SoftwareFactory .
+
+# Operational services properties
+
+:hasIssue
+	  rdf:type owl:ObjectProperty ;
+	  rdfs:domain :IssueResolutionService ;
+	  rdfs:range :Issue .
