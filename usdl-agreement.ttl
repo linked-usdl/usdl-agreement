@@ -242,17 +242,17 @@ usdl-core:ISA a foaf:Organization;
 
 :conditionEvaluator
 	rdf:type usdl-core:BusinessRole ;
-    rdfs:label "Condition evaluator"@en ;
-    skos:prefLabel "Condition evaluator"@en ;
-    skos:definition "<p>A Condition evaluator is an entity (possibly a third party) that is responsible for evaluating the conditions of the agreement, checking whether the conditions are being fulfilled or not.</p>"@en ;
+	rdfs:label "Condition evaluator"@en ;
+	skos:prefLabel "Condition evaluator"@en ;
+	skos:definition "<p>A Condition evaluator is an entity (possibly a third party) that is responsible for evaluating the conditions of the agreement, checking whether the conditions are being fulfilled or not.</p>"@en ;
 	skos:topConceptOf <http://www.linked-usdl.org/ns/usdl-business-roles>;
 	skos:inScheme <http://www.linked-usdl.org/ns/usdl-business-roles>.
 
 :metricProvider
 	rdf:type usdl-core:BusinessRole ;
-    rdfs:label "Metric provider"@en ;
-    skos:prefLabel "Metric provider"@en ;
-    skos:definition "<p>A Metric provider is an entity (possibly a third party) that is responsible for producing measurements of the metrics defined in the agreement.</p>"@en ;
+	rdfs:label "Metric provider"@en ;
+	skos:prefLabel "Metric provider"@en ;
+	skos:definition "<p>A Metric provider is an entity (possibly a third party) that is responsible for producing measurements of the metrics defined in the agreement.</p>"@en ;
 	skos:topConceptOf <http://www.linked-usdl.org/ns/usdl-business-roles>;
 	skos:inScheme <http://www.linked-usdl.org/ns/usdl-business-roles>.
 
