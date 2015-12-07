@@ -108,7 +108,7 @@
       usdl-agreement:hasValue [ rdf:type gr:QuantitativeValueFloat ; gr:hasValueFloat "99.99"^^xsd:float ] ;
       usdl-agreement:refersTo :percentageUptime
     ] ;
-  usdl-agreement:hasCompensation :performanceCreditCompensation
+  usdl-agreement:hasCompensation :performanceCreditCompensation ;
   usdl-agreement:hasEntityLiability :liability_customer , :liability_FDN ;
   usdl-agreement:hasValidityInterval :monthlyInterval .
 
@@ -116,7 +116,7 @@
   a usdl-agreement:Compensation ;
   usdl-agreement:hasEntityLiability :liability_customer , :liability_FDN ;
   usdl-agreement:guarantees
-    [ rdf:type usdl-agreement:GuaranteedValue
-      usdl-agreement:hasValue [ rdf:type metrics:Metric ; metrics:hasExpression "10 * floor(99.99 - ?percentageUptime)"^^xsd:string ]
+    [ rdf:type usdl-agreement:GuaranteedValue ;
+      usdl-agreement:hasValue [ rdf:type usdl-agreement:Metric ; usdl-agreement:hasExpression "10 * floor(99.99 - ?percentageUptime)"^^xsd:string ] ;
       usdl-agreement:refersTo :performanceCredit 
    ] .
